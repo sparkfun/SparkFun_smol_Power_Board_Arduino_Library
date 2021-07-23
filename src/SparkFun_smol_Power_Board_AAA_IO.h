@@ -25,6 +25,7 @@
 
 #include "SparkFun_smol_Power_Board_AAA_Constants.h"
 
+/** Communication interface for the SparkFun smôl Power Board AAA */
 class SMOL_POWER_AAA_IO
 {
 private:
@@ -32,25 +33,25 @@ private:
   byte _address;
 
 public:
-  // Default constructor.
+  /** @brief Create an object to communicate with the SparkFun smôl Power Board AAA over I2C. */
   SMOL_POWER_AAA_IO() {}
 
-  // Starts two wire interface.
+  /** Starts two wire interface. */
   bool begin(byte address, TwoWire& wirePort);
 
-  // Returns true if we get a reply from the I2C device.
+  /** Returns true if we get a reply from the I2C device. */
   bool isConnected();
 
-  // Read a single byte from a register.
+  /** Read a single byte from a register. */
   bool readSingleByte(byte registerAddress, byte* buffer);
 
-  // Writes a single byte into a register.
+  /** Writes a single byte into a register. */
   void writeSingleByte(byte registerAddress, byte value);
 
-  // Reads multiple bytes from a register into buffer byte array.
+  /** Reads multiple bytes from a register into buffer byte array. */
   bool readMultipleBytes(byte registerAddress, byte* buffer, byte packetLength);
 
-  // Writes multiple bytes to register from buffer byte array.
+  /** Writes multiple bytes to register from buffer byte array. */
   void writeMultipleBytes(byte registerAddress, const byte* buffer, byte packetLength);
 };
 

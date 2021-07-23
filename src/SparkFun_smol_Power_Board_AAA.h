@@ -25,7 +25,7 @@
 #include "SparkFun_smol_Power_Board_AAA_Constants.h"
 #include "SparkFun_smol_Power_Board_AAA_IO.h"
 
-/** I2C communication interface for the SparkFun smôl Power Board AAA */
+/** Communication interface for the SparkFun smôl Power Board AAA */
 class smolPowerAAA
 {
 public:
@@ -34,16 +34,16 @@ public:
 
   bool begin(byte deviceAddress = SFE_AAA_DEFAULT_I2C_ADDRESS, TwoWire &wirePort = Wire);
   bool isConnected();
-  bool setI2CAddress(byte address);
+  void setI2CAddress(byte address);
   byte getI2CAddress();
   byte getResetReason();
   float getTemperature();
   float getBatteryVoltage();
-  float getReferenceVoltage();
+  float measureVCC();
   bool setADCVoltageReference(sfe_power_board_aaa_ADC_ref_e ref);
   sfe_power_board_aaa_ADC_ref_e getADCVoltageReference();
-  bool setWatchdogTimerPrescaler(byte prescaler);
-  byte getWatchdogTimerPrescaler();
+  bool setWatchdogTimerPrescaler(sfe_power_board_aaa_WDT_prescale_e prescaler);
+  sfe_power_board_aaa_WDT_prescale_e getWatchdogTimerPrescaler();
   bool setPowerdownDurationWDTInts(uin16_t duration);
   bool getPowerDownDurationWDTInts(uin16_t *duration);
   void powerDownNow();

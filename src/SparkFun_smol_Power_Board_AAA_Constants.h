@@ -54,9 +54,10 @@ typedef enum
   SFE_AAA_REGISTER_RESET_REASON,
   SFE_AAA_REGISTER_TEMPERATURE,
   SFE_AAA_REGISTER_VBAT,
+  SFE_AAA_REGISTER_VCC_VOLTAGE,
+  SFE_AAA_REGISTER_ADC_REFERENCE,
+  SFE_AAA_REGISTER_WDT_PRESCALER
 } sfe_power_board_aaa_registers_e;
-
-#define SFE_AAA_REGISTER_I2C_ADDRESS_LENGTH 1 ///< The length of the I2C address in bytes
 
 /** Allow the user to select either VCC or the internal 1.1V reference as the reference for VBAT ADC measurements */
 typedef enum 
@@ -65,5 +66,20 @@ typedef enum
   SFE_AAA_USE_ADC_REF_1V1,      //Use the ATtiny43U's built-in 1.1V ADC reference. Quiet, but limits the full scale to 2.2V.
   SFE_AAA_USE_ADC_REF_UNDEFINED //Something bad has happened...
 } sfe_power_board_aaa_ADC_ref_e;
+
+/** The Watchdog Timer Prescale select */
+typedef enum 
+{
+  SFE_AAA_WDT_PRESCALE_2K = 0,  //2K cycles = 16ms timeout
+  SFE_AAA_WDT_PRESCALE_4K,      //4K cycles = 32ms timeout
+  SFE_AAA_WDT_PRESCALE_8K,      //8K cycles = 64ms timeout
+  SFE_AAA_WDT_PRESCALE_16K,     //16K cycles = 0.125s timeout
+  SFE_AAA_WDT_PRESCALE_32K,     //32K cycles = 0.25s timeout
+  SFE_AAA_WDT_PRESCALE_64K,     //64K cycles = 0.5s timeout
+  SFE_AAA_WDT_PRESCALE_128K,    //128K cycles = 1.0s timeout
+  SFE_AAA_WDT_PRESCALE_256K,    //256K cycles = 2.0s timeout
+  SFE_AAA_WDT_PRESCALE_512K,    //512K cycles = 4.0s timeout
+  SFE_AAA_WDT_PRESCALE_1024K    //1024K cycles = 8.0s timeout
+} sfe_power_board_aaa_WDT_prescale_e;
 
 #endif // /__SFE_SMOL_POWER_BOARD_AAA_CONSTANTS__

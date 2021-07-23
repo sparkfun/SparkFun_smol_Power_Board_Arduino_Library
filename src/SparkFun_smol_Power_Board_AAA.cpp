@@ -5,7 +5,7 @@
  * 
  * @section intro_sec Introduction
  * 
- * This library facilitates communication with the smôl Power Board AAA over I<sup>2</sup>C.
+ * This library facilitates communication with the smôl Power Board AAA.
  * 
  * Want to support open source hardware? Buy a board from SparkFun!
  * SparkX smôl Power Board AAA (SPX-18360): https://www.sparkfun.com/products/18360
@@ -65,14 +65,16 @@ bool smolPowerAAA::isConnected()
     @return True if the I2C address change was requested successfully, otherwise false.
 */
 /**************************************************************************/
-bool smolPowerAAA::setI2CAddress(byte address)
+void smolPowerAAA::setI2CAddress(byte address)
 {
   /** To change the address, we need to write two bytes to SFE_AAA_REGISTER_I2C_ADDRESS
       The first is the new address. The second is a one byte CRC of the address. */
   byte bytesToSend[2];
   bytesToSend[0] = address;
   bytesToSend[1] = computeCRC8(bytesToSend, 1);
-  return (smolPowerAAA_io.writeMultipleBytes(SFE_AAA_REGISTER_I2C_ADDRESS, bytesToSend, 2));
+  smolPowerAAA_io.writeMultipleBytes(SFE_AAA_REGISTER_I2C_ADDRESS, bytesToSend, 2);
+  //We can't return anything because: writeMultipleBytes returns void; and we can't
+  //call getI2CAddress() unless we have called .begin first.
 }
 
 /**************************************************************************/
@@ -111,7 +113,8 @@ byte smolPowerAAA::getResetReason()
 
 /**************************************************************************/
 /*!
-    @brief  Read the ATtiny43U's internal temperature
+    @brief  Read the ATtiny43U's internal temperature.
+            TO DO: Add temperature calibration / correction functionality.
     @return The temperature in Degrees Centigrade / Celcius or -273.15 if an error occured.
 */
 /**************************************************************************/
@@ -137,7 +140,8 @@ float smolPowerAAA::getTemperature()
     @brief  Read the ATtiny43U's battery voltage (VBAT).
             We need to read two bytes (uint16_t, little endian) from SFE_AAA_REGISTER_VBAT.
             This will be the raw 10-bit ADC reading. We need to manually convert this to
-            voltage using the selected voltage reference.
+            voltage using the selected voltage reference. The ADC has a built-in divide-by-2
+            circuit, so we can measure up to 2*VCC or 2.2V depending on the reference.
     @return The battery voltage in Volts or -99.0 if an error occurred.
 */
 /**************************************************************************/
@@ -151,29 +155,113 @@ float smolPowerAAA::getBatteryVoltage()
   if (smolPowerAAA_io.readMultipleBytes(SFE_AAA_REGISTER_TEMPERATURE, theBytes, 2))
   {
     uint16_t rawVolts = (((uint16_t)theBytes[1]) << 8) | theBytes[0]; // Little endian
-    result = (float)rawVolts) / 1023.0; // Convert 10-bit ADC result to float
-    if (ref == SFE_AAA_USE_ADC_REF_VCC)
+    result = ((float)rawVolts) / 1023.0; // Convert 10-bit ADC result to the fraction of full range
+    if (ref == SFE_AAA_USE_ADC_REF_VCC) // Are we using VCC as the reference?
+    {
+      float vcc = measureVCC(); // We need to measure VCC so we can scale the ADC reading correctly
+      if (vcc > 0.0)
+      {
+        result = result * 2.0 * vcc; // Scale rawVolts to VCC
+      }
+      else
+        return (-99.0); // measureVCC failed so return an error
+    }
+    else // We must be using the 1.1V reference
+    {
+      result = result * 2.0 * 1.1; // Scale rawVolts to 1.1V
+    }
   }
   return (result);
 }
 
 /**************************************************************************/
 /*!
-    @brief  Read the ATtiny43U's 1.1V internal reference. This allows us to work out what VCC is.
+    @brief  Measure the ATtiny43U's VCC by reading the 1.1V internal reference via the ADC.
+            This allows us to work out what VCC is.
             We need to read two bytes (uint16_t, little endian) from SFE_AAA_REGISTER_VBAT.
             This will be the raw 10-bit ADC reading. We need to manually convert this to
-            voltage using the selected voltage reference.
+            voltage. The ATtiny43U will automatically select VCC as the reference. There is
+            no need to do it here.
     @return The battery voltage in Volts or -99.0 if an error occurred.
 */
 /**************************************************************************/
-float smolPowerAAA::getReferenceVoltage()
+float smolPowerAAA::measureVCC()
 {
-
+  float result = -99.0; // Return -99.0V if something bad happened.
+  byte theBytes[2];
+  if (smolPowerAAA_io.readMultipleBytes(SFE_AAA_REGISTER_VCC_VOLTAGE, theBytes, 2))
+  {
+    uint16_t rawVolts = (((uint16_t)theBytes[1]) << 8) | theBytes[0]; // Little endian
+    float fractionFullRange = ((float)rawVolts) / 1023.0; // Convert 10-bit ADC result to the fraction of full range
+    // We know that the ADC has measured the 1.1V internal reference using VCC as the full range.
+    // Therefore we can calculate VCC from fractionFullRange.
+    // fractionFullRange = 1.1V / VCC
+    // VCC = 1.1 / fractionFullRange
+    result = 1.1 / fractionFullRange;
+  }
+  return (result);
 }
 
-  bool smolPowerAAA::setBatteryVoltageReference(sfe_power_board_aaa_ADC_ref_e ref);
-  sfe_power_board_aaa_ADC_ref_e smolPowerAAA::getBatteryVoltageReference();
-  bool smolPowerAAA::setWatchdogTimerPrescaler(byte prescaler);
+/**************************************************************************/
+/*!
+    @brief  Set the ATtiny43U's ADC voltage reference to VCC or the internal 1.1V reference.
+    @param  ref
+            The reference: SFE_AAA_USE_ADC_REF_VCC or SFE_AAA_USE_ADC_REF_1V1
+    @return True if the reference is set successfuly, false if not.
+*/
+/**************************************************************************/
+bool smolPowerAAA::setADCVoltageReference(sfe_power_board_aaa_ADC_ref_e ref)
+{
+  /** To change the voltage reference, we need to write two bytes to SFE_AAA_REGISTER_ADC_REFERENCE
+      The first is the new address. The second is a one byte CRC of the address. */
+  byte bytesToSend[2];
+  bytesToSend[0] = (byte)ref;
+  bytesToSend[1] = computeCRC8(bytesToSend, 1);
+  smolPowerAAA_io.writeMultipleBytes(SFE_AAA_REGISTER_ADC_REFERENCE, bytesToSend, 2);
+  return (getADCVoltageReference() == ref); //Check the reference was modified correctly by reading it back again
+}
+
+/**************************************************************************/
+/*!
+    @brief  Get the ATtiny43U's ADC voltage reference: VCC or the internal 1.1V reference.
+    @return SFE_AAA_USE_ADC_REF_VCC or SFE_AAA_USE_ADC_REF_1V1 if the reference was read successfuly,
+            SFE_AAA_USE_ADC_REF_UNDEFINED if not.
+*/
+/**************************************************************************/
+sfe_power_board_aaa_ADC_ref_e smolPowerAAA::getADCVoltageReference()
+{
+  byte buffer;
+  bool result = readSingleByte(SFE_AAA_REGISTER_ADC_REFERENCE, &buffer);
+  if (!result)
+    return (SFE_AAA_USE_ADC_REF_UNDEFINED);
+  if ((sfe_power_board_aaa_ADC_ref_e)buffer == SFE_AAA_USE_ADC_REF_VCC)
+    return (SFE_AAA_USE_ADC_REF_VCC);
+  else if ((sfe_power_board_aaa_ADC_ref_e)buffer == SFE_AAA_USE_ADC_REF_1V1)
+    return (SFE_AAA_USE_ADC_REF_1V1);
+  else
+    return (SFE_AAA_USE_ADC_REF_UNDEFINED);
+}
+
+/**************************************************************************/
+/*!
+    @brief  Set the ATtiny43U's Watchdog Timer prescaler to set the WDT interrupt rate.
+    @param  prescaler
+            The prescaler.
+    @return True if the prescaler is set successfuly, false if not.
+*/
+/**************************************************************************/
+bool smolPowerAAA::setWatchdogTimerPrescaler(sfe_power_board_aaa_WDT_prescale_e prescaler)
+{
+  /** To change the prescaler, we need to write two bytes to SFE_AAA_REGISTER_WDT_PRESCALER
+      The first is the new prescaler. The second is a one byte CRC of the address. */
+  byte bytesToSend[2];
+  bytesToSend[0] = (byte)prescaler;
+  bytesToSend[1] = computeCRC8(bytesToSend, 1);
+  smolPowerAAA_io.writeMultipleBytes(SFE_AAA_REGISTER_WDT_PRESCALER, bytesToSend, 2);
+  return (getWatchdogTimerPrescaler() == ref); //Check the prescaler was modified correctly by reading it back again
+}
+
+
   byte smolPowerAAA::getWatchdogTimerPrescaler();
   bool smolPowerAAA::setPowerdownDurationWDTInts(uin16_t duration);
   bool smolPowerAAA::getPowerDownDurationWDTInts(uin16_t *duration);

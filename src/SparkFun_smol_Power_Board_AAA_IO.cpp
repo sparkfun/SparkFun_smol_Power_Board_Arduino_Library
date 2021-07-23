@@ -1,5 +1,5 @@
 /*!
- * @file SparkFun_smol_Power_Board_AAA.cpp
+ * @file SparkFun_smol_Power_Board_AAA_IO.cpp
  * 
  * @mainpage SparkFun smôl Power Board AAA Arduino Library
  * 
@@ -25,6 +25,19 @@
 
 #include "SparkFun_smol_Power_Board_AAA_IO.h"
 
+/**************************************************************************/
+/*!
+    @brief  Begin communication with the SparkFun smôl Power Board AAA over I2C
+    @param  deviceAddress
+            The I2C address of the Power Board.
+            Default is SFE_AAA_DEFAULT_I2C_ADDRESS 0x50.
+            Can be changed with setI2CAddress.
+    @param  wirePort
+            The TwoWire (I2C) port used to communicate with the Power Board.
+            Default is Wire.
+    @return True if communication with the Power Board was successful, otherwise false.
+*/
+/**************************************************************************/
 bool SMOL_POWER_AAA_IO::begin(byte address, TwoWire& wirePort)
 {
   _i2cPort = &wirePort;
@@ -32,9 +45,14 @@ bool SMOL_POWER_AAA_IO::begin(byte address, TwoWire& wirePort)
   return isConnected();
 }
 
-// isConnected reads the smôl Power Board AAA's I2C address and confirms it matches _address.
-// In theory, it should be impossible for _address and the smôl Power Board AAA's I2C address to not be the same,
-// but you never know...
+/**************************************************************************/
+/*!
+    @brief  Reads the smôl Power Board AAA's I2C address and confirms it matches _address.
+            In theory, it should be impossible for _address and the smôl Power Board AAA's I2C address to not be the same,
+            but you never know...
+    @return True if communication with the Power Board was successful, otherwise false.
+*/
+/**************************************************************************/
 bool SMOL_POWER_AAA_IO::isConnected()
 {
   _i2cPort->beginTransmission(_address);
@@ -53,6 +71,17 @@ bool SMOL_POWER_AAA_IO::isConnected()
   return (false);
 }
 
+/**************************************************************************/
+/*!
+    @brief  Write multiple bytes to the SparkFun smôl Power Board AAA over I2C
+    @param  registerAddress
+            The (software) register address being written to.
+    @param  buffer
+            A pointer to the byte array to be written.
+    @param  packetLength
+            The number of bytes to be written.
+*/
+/**************************************************************************/
 void SMOL_POWER_AAA_IO::writeMultipleBytes(byte registerAddress, const byte* buffer, byte const packetLength)
 {
   _i2cPort->beginTransmission(_address);
@@ -64,6 +93,19 @@ void SMOL_POWER_AAA_IO::writeMultipleBytes(byte registerAddress, const byte* buf
   _i2cPort->endTransmission();
 }
 
+/**************************************************************************/
+/*!
+    @brief  Read multiple bytes from the SparkFun smôl Power Board AAA over I2C.
+            First the register address is written, then the data bytes are read.
+    @param  registerAddress
+            The (software) register address being read from.
+    @param  buffer
+            A pointer to the byte array which will hold the read data.
+    @param  packetLength
+            The number of bytes to be read.
+    @return True if the data was read successfully, otherwise false.
+*/
+/**************************************************************************/
 bool SMOL_POWER_AAA_IO::readMultipleBytes(byte registerAddress, byte* buffer, byte const packetLength)
 {
   _i2cPort->beginTransmission(_address);
@@ -78,6 +120,17 @@ bool SMOL_POWER_AAA_IO::readMultipleBytes(byte registerAddress, byte* buffer, by
   return ((bytesReturned == packetLength) && (i == packetLength));
 }
 
+/**************************************************************************/
+/*!
+    @brief  Read a single byte from the SparkFun smôl Power Board AAA over I2C.
+            First the register address is written, then the data byte is read.
+    @param  registerAddress
+            The (software) register address being read from.
+    @param  buffer
+            A pointer to the byte which will hold the read data.
+    @return True if the data byte was read successfully, otherwise false.
+*/
+/**************************************************************************/
 bool SMOL_POWER_AAA_IO::readSingleByte(byte registerAddress, byte* buffer)
 {
   _i2cPort->beginTransmission(_address);
@@ -91,6 +144,15 @@ bool SMOL_POWER_AAA_IO::readSingleByte(byte registerAddress, byte* buffer)
   return (bytesReturned == 1);
 }
 
+/**************************************************************************/
+/*!
+    @brief  Write a single byte to the SparkFun smôl Power Board AAA over I2C
+    @param  registerAddress
+            The (software) register address being written to.
+    @param  value
+            The data byte to be written.
+*/
+/**************************************************************************/
 void SMOL_POWER_AAA_IO::writeSingleByte(byte registerAddress, byte const value)
 {
   _i2cPort->beginTransmission(_address);
