@@ -1,0 +1,46 @@
+#######################################
+# Syntax Coloring Map for the SparkFun smôl Power Board AAA Arduino Library
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+smolPowerAAA	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+begin	KEYWORD2
+isConnected	KEYWORD2
+setI2CAddress	KEYWORD2
+getI2CAddress	KEYWORD2
+getResetReason	KEYWORD2
+getTemperature	KEYWORD2
+getBatteryVoltage	KEYWORD2
+getReferenceVoltage	KEYWORD2
+setADCVoltageReference	KEYWORD2
+getADCVoltageReference	KEYWORD2
+setWatchdogTimerPrescaler	KEYWORD2
+getWatchdogTimerPrescaler	KEYWORD2
+setPowerdownDurationWDTInts	KEYWORD2
+getPowerDownDurationWDTInts	KEYWORD2
+powerDownNow	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+SFE_AAA_DEFAULT_I2C_ADDRESS	LITERAL1
+SFE_AAA_RESET_REASON_PORF_BIT	LITERAL1
+SFE_AAA_RESET_REASON_PORF	LITERAL1
+SFE_AAA_RESET_REASON_EXTRF_BIT	LITERAL1
+SFE_AAA_RESET_REASON_EXTRF	LITERAL1
+SFE_AAA_RESET_REASON_BORF_BIT	LITERAL1
+SFE_AAA_RESET_REASON_BORF	LITERAL1
+SFE_AAA_RESET_REASON_WDRF_BIT	LITERAL1
+SFE_AAA_RESET_REASON_WDRF	LITERAL1
+SFE_AAA_EEPROM_CORRUPT_ON_RESET_BIT	LITERAL1
+SFE_AAA_EEPROM_CORRUPT_ON_RESET	LITERAL1
+SFE_AAA_REGISTER_I2C_ADDRESS_LENGTH	LITERAL1
