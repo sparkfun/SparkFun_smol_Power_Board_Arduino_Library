@@ -62,12 +62,11 @@ bool smolPowerAAA::isConnected()
             re-establish communication with the Power Board.
     @param  address
             The new I2C address.
-    @return True if the I2C address change was requested successfully, otherwise false.
 */
 /**************************************************************************/
 void smolPowerAAA::setI2CAddress(byte address)
 {
-  /** To change the address, we need to write two bytes to SFE_AAA_REGISTER_I2C_ADDRESS
+  /** To change the address, we need to write two bytes to SFE_AAA_REGISTER_I2C_ADDRESS.
       The first is the new address. The second is a one byte CRC of the address. */
   byte bytesToSend[2];
   bytesToSend[0] = address;
@@ -152,7 +151,7 @@ float smolPowerAAA::getBatteryVoltage()
   if (ref == SFE_AAA_USE_ADC_REF_UNDEFINED)
     return (result); // Return now if getBatteryVoltageReference failed
   byte theBytes[2];
-  if (smolPowerAAA_io.readMultipleBytes(SFE_AAA_REGISTER_TEMPERATURE, theBytes, 2))
+  if (smolPowerAAA_io.readMultipleBytes(SFE_AAA_REGISTER_VCC_VOLTAGE, theBytes, 2))
   {
     uint16_t rawVolts = (((uint16_t)theBytes[1]) << 8) | theBytes[0]; // Little endian
     result = ((float)rawVolts) / 1023.0; // Convert 10-bit ADC result to the fraction of full range
