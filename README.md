@@ -1,14 +1,16 @@
 # SparkFun smôl Power Board AAA Arduino Library
 
-- This library can be installed through the Arduino Library Manager: please search for **SparkFun smol Power Board AAA**
-
 [![SparkX smôl Power Board AAA (SPX-18360)]()](https://www.sparkfun.com/products/18360)
 
 [*SparkX smôl Power Board AAA (SPX-18360)*](https://www.sparkfun.com/products/18360)
 
+An Arduino library to enable communication with the smôl Power Board AAA.
+
+This library can be installed through the Arduino Library Manager: please search for **SparkFun smol Power Board AAA**
+
 ## Repository Contents
 
-- **/examples** - Example sketches for the library (.ino). Run these from the Arduino IDE. They demonstrate how to communicate with the Power Board over I<sup>2</sup>C.
+- **/examples** - Example sketches for the library (.ino). Run these from the Arduino IDE.
 - **/src** - Source files for the library (.cpp, .h).
 - **keywords.txt** - Keywords from this library that will be highlighted in the Arduino IDE.
 - **library.properties** - General library properties for the Arduino package manager.
