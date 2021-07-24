@@ -1,0 +1,28 @@
+var searchData=
+[
+  ['setadcvoltagereference_13',['setADCVoltageReference',['../classsmol_power_a_a_a.html#a8627bdf60df4b5441fecd6930594020b',1,'smolPowerAAA']]],
+  ['seti2caddress_14',['setI2CAddress',['../classsmol_power_a_a_a.html#ae49fae337fdcd741c03ea7d3a8a2f6cd',1,'smolPowerAAA']]],
+  ['setpowerdowndurationwdtints_15',['setPowerdownDurationWDTInts',['../classsmol_power_a_a_a.html#a6f24b729b18645cd8c86cb3b58cadddc',1,'smolPowerAAA']]],
+  ['setwatchdogtimerprescaler_16',['setWatchdogTimerPrescaler',['../classsmol_power_a_a_a.html#a7b4b639fa6f2b60d1afa00f891fcd164',1,'smolPowerAAA']]],
+  ['sfe_5faaa_5fcomm_5ferror_17',['SFE_AAA_COMM_ERROR',['../_spark_fun__smol___power___board___a_a_a___constants_8h.html#abf413fd7e17cbc1cef7612a5fc9a62d9',1,'SparkFun_smol_Power_Board_AAA_Constants.h']]],
+  ['sfe_5faaa_5fcomm_5ferror_5fbit_18',['SFE_AAA_COMM_ERROR_BIT',['../_spark_fun__smol___power___board___a_a_a___constants_8h.html#a935f8b964a8f41beac30e8aead4dcb31',1,'SparkFun_smol_Power_Board_AAA_Constants.h']]],
+  ['sfe_5faaa_5feeprom_5fcorrupt_5fon_5freset_19',['SFE_AAA_EEPROM_CORRUPT_ON_RESET',['../_spark_fun__smol___power___board___a_a_a___constants_8h.html#abe60f52d79523452ea5d9cfb93f6ffa9',1,'SparkFun_smol_Power_Board_AAA_Constants.h']]],
+  ['sfe_5faaa_5feeprom_5fcorrupt_5fon_5freset_5fbit_20',['SFE_AAA_EEPROM_CORRUPT_ON_RESET_BIT',['../_spark_fun__smol___power___board___a_a_a___constants_8h.html#a559d432e7eb28cdc6a2ba4062bae7bda',1,'SparkFun_smol_Power_Board_AAA_Constants.h']]],
+  ['sfe_5faaa_5freset_5freason_5fborf_21',['SFE_AAA_RESET_REASON_BORF',['../_spark_fun__smol___power___board___a_a_a___constants_8h.html#a2f9ce480ddef1efa6764fef288acba04',1,'SparkFun_smol_Power_Board_AAA_Constants.h']]],
+  ['sfe_5faaa_5freset_5freason_5fborf_5fbit_22',['SFE_AAA_RESET_REASON_BORF_BIT',['../_spark_fun__smol___power___board___a_a_a___constants_8h.html#a324357e0b8d50d18a0aacd5a2d90d742',1,'SparkFun_smol_Power_Board_AAA_Constants.h']]],
+  ['sfe_5faaa_5freset_5freason_5fextrf_23',['SFE_AAA_RESET_REASON_EXTRF',['../_spark_fun__smol___power___board___a_a_a___constants_8h.html#a868d435412964f5a002221f42fca30be',1,'SparkFun_smol_Power_Board_AAA_Constants.h']]],
+  ['sfe_5faaa_5freset_5freason_5fextrf_5fbit_24',['SFE_AAA_RESET_REASON_EXTRF_BIT',['../_spark_fun__smol___power___board___a_a_a___constants_8h.html#a77188b0fee687caeb956af6719fdbeba',1,'SparkFun_smol_Power_Board_AAA_Constants.h']]],
+  ['sfe_5faaa_5freset_5freason_5fporf_25',['SFE_AAA_RESET_REASON_PORF',['../_spark_fun__smol___power___board___a_a_a___constants_8h.html#aac15fc6e08124b1dbdf7a7a4d4880c1b',1,'SparkFun_smol_Power_Board_AAA_Constants.h']]],
+  ['sfe_5faaa_5freset_5freason_5fporf_5fbit_26',['SFE_AAA_RESET_REASON_PORF_BIT',['../_spark_fun__smol___power___board___a_a_a___constants_8h.html#a4c0d4e3e027ad105e34a1f14494231ef',1,'SparkFun_smol_Power_Board_AAA_Constants.h']]],
+  ['sfe_5faaa_5freset_5freason_5fwdrf_27',['SFE_AAA_RESET_REASON_WDRF',['../_spark_fun__smol___power___board___a_a_a___constants_8h.html#a7830c9a576e3d63dad881318ab73fbab',1,'SparkFun_smol_Power_Board_AAA_Constants.h']]],
+  ['sfe_5faaa_5freset_5freason_5fwdrf_5fbit_28',['SFE_AAA_RESET_REASON_WDRF_BIT',['../_spark_fun__smol___power___board___a_a_a___constants_8h.html#a5d8ce74adaa472fc63f0c01c8c60a62d',1,'SparkFun_smol_Power_Board_AAA_Constants.h']]],
+  ['sfe_5fpower_5fboard_5faaa_5fadc_5fref_5fe_29',['sfe_power_board_aaa_ADC_ref_e',['../_spark_fun__smol___power___board___a_a_a___constants_8h.html#a897ee17e24594f8ef65f904e2a254b1a',1,'SparkFun_smol_Power_Board_AAA_Constants.h']]],
+  ['sfe_5fpower_5fboard_5faaa_5fregisters_5fe_30',['sfe_power_board_aaa_registers_e',['../_spark_fun__smol___power___board___a_a_a___constants_8h.html#ac8897faf1bddee32c8fc99c82b9551b8',1,'SparkFun_smol_Power_Board_AAA_Constants.h']]],
+  ['sfe_5fpower_5fboard_5faaa_5fwdt_5fprescale_5fe_31',['sfe_power_board_aaa_WDT_prescale_e',['../_spark_fun__smol___power___board___a_a_a___constants_8h.html#a3cb45f7f7c5901028ee402f0263f6ee6',1,'SparkFun_smol_Power_Board_AAA_Constants.h']]],
+  ['smol_5fpower_5faaa_5fio_32',['SMOL_POWER_AAA_IO',['../class_s_m_o_l___p_o_w_e_r___a_a_a___i_o.html',1,'SMOL_POWER_AAA_IO'],['../class_s_m_o_l___p_o_w_e_r___a_a_a___i_o.html#a2d2a0f079cc9230be4bfd693bd5de06f',1,'SMOL_POWER_AAA_IO::SMOL_POWER_AAA_IO()']]],
+  ['smolpoweraaa_33',['smolPowerAAA',['../classsmol_power_a_a_a.html',1,'smolPowerAAA'],['../classsmol_power_a_a_a.html#aaf7afc4f3bbce2e1bb10da99eef0b566',1,'smolPowerAAA::smolPowerAAA()']]],
+  ['sparkfun_20smôl_20power_20board_20aaa_20arduino_20library_34',['SparkFun smôl Power Board AAA Arduino Library',['../index.html',1,'']]],
+  ['sparkfun_5fsmol_5fpower_5fboard_5faaa_2eh_35',['SparkFun_smol_Power_Board_AAA.h',['../_spark_fun__smol___power___board___a_a_a_8h.html',1,'']]],
+  ['sparkfun_5fsmol_5fpower_5fboard_5faaa_5fconstants_2eh_36',['SparkFun_smol_Power_Board_AAA_Constants.h',['../_spark_fun__smol___power___board___a_a_a___constants_8h.html',1,'']]],
+  ['sparkfun_5fsmol_5fpower_5fboard_5faaa_5fio_2eh_37',['SparkFun_smol_Power_Board_AAA_IO.h',['../_spark_fun__smol___power___board___a_a_a___i_o_8h.html',1,'']]]
+];
