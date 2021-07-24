@@ -8,8 +8,8 @@
  * This library facilitates communication with the smôl Power Board AAA over I<sup>2</sup>C.
  * 
  * Want to support open source hardware? Buy a board from SparkFun!
- * SparkX smôl Power Board AAA (SPX-18360): https://www.sparkfun.com/products/18360
- * SparkX smôl ESP32 (SPX-18362): https://www.sparkfun.com/products/18362
+ * <br>SparkX smôl Power Board AAA (SPX-18360): https://www.sparkfun.com/products/18360
+ * <br>SparkX smôl ESP32 (SPX-18362): https://www.sparkfun.com/products/18362
  * 
  * @section author Author
  * 
@@ -48,8 +48,6 @@ bool SMOL_POWER_AAA_IO::begin(byte address, TwoWire& wirePort)
 /**************************************************************************/
 /*!
     @brief  Reads the smôl Power Board AAA's I2C address and confirms it matches _address.
-            In theory, it should be impossible for _address and the smôl Power Board AAA's I2C address to not be the same,
-            but you never know...
     @return True if communication with the Power Board was successful, otherwise false.
 */
 /**************************************************************************/

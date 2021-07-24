@@ -6,8 +6,8 @@
  * This library facilitates communication with the smôl Power Board AAA over I<sup>2</sup>C.
  * 
  * Want to support open source hardware? Buy a board from SparkFun!
- * SparkX smôl Power Board AAA (SPX-18360): https://www.sparkfun.com/products/18360
- * SparkX smôl ESP32 (SPX-18362): https://www.sparkfun.com/products/18362
+ * <br>SparkX smôl Power Board AAA (SPX-18360): https://www.sparkfun.com/products/18360
+ * <br>SparkX smôl ESP32 (SPX-18362): https://www.sparkfun.com/products/18362
  * 
  * This library was written by:
  * Paul Clark

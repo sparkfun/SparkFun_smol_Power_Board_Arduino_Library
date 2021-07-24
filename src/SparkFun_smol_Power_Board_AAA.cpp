@@ -8,8 +8,8 @@
  * This library facilitates communication with the smôl Power Board AAA.
  * 
  * Want to support open source hardware? Buy a board from SparkFun!
- * SparkX smôl Power Board AAA (SPX-18360): https://www.sparkfun.com/products/18360
- * SparkX smôl ESP32 (SPX-18362): https://www.sparkfun.com/products/18362
+ * <br>SparkX smôl Power Board AAA (SPX-18360): https://www.sparkfun.com/products/18360
+ * <br>SparkX smôl ESP32 (SPX-18362): https://www.sparkfun.com/products/18362
  * 
  * @section author Author
  * 
@@ -95,22 +95,22 @@ byte smolPowerAAA::getI2CAddress()
 /**************************************************************************/
 /*!
     @brief  Read the reason for the ATtiny43U's most recent reset.
-            The reset reason is updated as soon as the code starts.
-            The four MCU STatus Register Flags are read.
-            If the ATtiny43U found that its eeprom was corrupt when the code started,
-            SFE_AAA_EEPROM_CORRUPT_ON_RESET will be set indicating that the eeprom
-            settings have been reset to the default values.
     @return The reset reason: the logical OR of:
-            SFE_AAA_RESET_REASON_PORF
-            SFE_AAA_RESET_REASON_EXTRF
-            SFE_AAA_RESET_REASON_BORF
-            SFE_AAA_RESET_REASON_WDRF
-            SFE_AAA_EEPROM_CORRUPT_ON_RESET
-            SFE_AAA_EEPROM_COMM_ERROR
+            <br>SFE_AAA_RESET_REASON_PORF
+            <br>SFE_AAA_RESET_REASON_EXTRF
+            <br>SFE_AAA_RESET_REASON_BORF
+            <br>SFE_AAA_RESET_REASON_WDRF
+            <br>SFE_AAA_EEPROM_CORRUPT_ON_RESET
+            <br>SFE_AAA_COMM_ERROR
 */
 /**************************************************************************/
 byte smolPowerAAA::getResetReason()
 {
+  /** The reset reason is updated as soon as the ATtiny43U starts.
+      The four MCU STatus Register Flags are read.
+      If the ATtiny43U found that its eeprom was corrupt when the code started,
+      SFE_AAA_EEPROM_CORRUPT_ON_RESET will be set indicating that the eeprom
+      settings have been reset to the default values. */
   byte reason;
   bool result = smolPowerAAA_io.readSingleByte(SFE_AAA_REGISTER_RESET_REASON, &reason);
   if (!result)
@@ -121,7 +121,7 @@ byte smolPowerAAA::getResetReason()
 /**************************************************************************/
 /*!
     @brief  Read the ATtiny43U's internal temperature.
-            TO DO: Add temperature calibration / correction functionality.
+            <br>TO DO: Add temperature calibration / correction functionality.
     @return The temperature in Degrees Centigrade / Celcius or -273.15 if an error occured.
 */
 /**************************************************************************/
@@ -145,15 +145,15 @@ float smolPowerAAA::getTemperature()
 /**************************************************************************/
 /*!
     @brief  Read the ATtiny43U's battery voltage (VBAT).
-            We need to read two bytes (uint16_t, little endian) from SFE_AAA_REGISTER_VBAT.
-            This will be the raw 10-bit ADC reading. We need to manually convert this to
-            voltage using the selected voltage reference. The ADC has a built-in divide-by-2
-            circuit, so we can measure up to 2*VCC or 2.2V depending on the reference.
     @return The battery voltage in Volts or -99.0 if an error occurred.
 */
 /**************************************************************************/
 float smolPowerAAA::getBatteryVoltage()
 {
+  /** This function reads two bytes (uint16_t, little endian) from SFE_AAA_REGISTER_VBAT.
+      This will be the raw 10-bit ADC reading. We need to manually convert this to
+      voltage using the selected voltage reference. The ADC has a built-in divide-by-2
+      circuit, so we can measure up to 2*VCC or 2.2V depending on the reference. */
   float result = -99.0; // Return -99.0V if something bad happened.
   sfe_power_board_aaa_ADC_ref_e ref = getADCVoltageReference(); // Read which voltage reference is being used
   if (ref == SFE_AAA_USE_ADC_REF_UNDEFINED)
@@ -184,16 +184,16 @@ float smolPowerAAA::getBatteryVoltage()
 /**************************************************************************/
 /*!
     @brief  Measure the ATtiny43U's VCC by reading the 1.1V internal reference via the ADC.
-            This allows us to work out what VCC is.
-            We need to read two bytes (uint16_t, little endian) from SFE_AAA_REGISTER_VBAT.
-            This will be the raw 10-bit ADC reading. We need to manually convert this to
-            voltage. The ATtiny43U will automatically select VCC as the reference. There is
-            no need to do it here.
     @return The battery voltage in Volts or -99.0 if an error occurred.
 */
 /**************************************************************************/
 float smolPowerAAA::measureVCC()
 {
+  /** By reading the 1.1V internal reference we can work out what VCC is.
+      We need to read two bytes (uint16_t, little endian) from SFE_AAA_REGISTER_VBAT.
+      This will be the raw 10-bit ADC reading. We need to manually convert this to
+      voltage. The ATtiny43U will automatically select VCC as the reference. There is
+      no need to do it here. */
   float result = -99.0; // Return -99.0V if something bad happened.
   byte theBytes[2];
   if (smolPowerAAA_io.readMultipleBytes(SFE_AAA_REGISTER_VCC_VOLTAGE, theBytes, 2))

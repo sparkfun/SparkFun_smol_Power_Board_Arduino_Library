@@ -81,7 +81,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ab2309c1845e290dd273691fe5fffd9ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Begin communication with the SparkFun smôl Power Board AAA over I2C.  <a href="class_s_m_o_l___p_o_w_e_r___a_a_a___i_o.html#ab2309c1845e290dd273691fe5fffd9ae">More...</a><br /></td></tr>
 <tr class="separator:ab2309c1845e290dd273691fe5fffd9ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5162dad790c2bf5432999bef418ba7d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_m_o_l___p_o_w_e_r___a_a_a___i_o.html#ad5162dad790c2bf5432999bef418ba7d">isConnected</a> ()</td></tr>
-<tr class="memdesc:ad5162dad790c2bf5432999bef418ba7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads the smôl Power Board AAA's I2C address and confirms it matches _address. In theory, it should be impossible for _address and the smôl Power Board AAA's I2C address to not be the same, but you never know...  <a href="class_s_m_o_l___p_o_w_e_r___a_a_a___i_o.html#ad5162dad790c2bf5432999bef418ba7d">More...</a><br /></td></tr>
+<tr class="memdesc:ad5162dad790c2bf5432999bef418ba7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads the smôl Power Board AAA's I2C address and confirms it matches _address.  <a href="class_s_m_o_l___p_o_w_e_r___a_a_a___i_o.html#ad5162dad790c2bf5432999bef418ba7d">More...</a><br /></td></tr>
 <tr class="separator:ad5162dad790c2bf5432999bef418ba7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c56f35627d34029e9a7ef97f2f9e15f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_m_o_l___p_o_w_e_r___a_a_a___i_o.html#a1c56f35627d34029e9a7ef97f2f9e15f">readSingleByte</a> (byte registerAddress, byte *buffer)</td></tr>
 <tr class="memdesc:a1c56f35627d34029e9a7ef97f2f9e15f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read a single byte from the SparkFun smôl Power Board AAA over I2C. First the register address is written, then the data byte is read.  <a href="class_s_m_o_l___p_o_w_e_r___a_a_a___i_o.html#a1c56f35627d34029e9a7ef97f2f9e15f">More...</a><br /></td></tr>
@@ -153,7 +153,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Reads the smôl Power Board AAA's I2C address and confirms it matches _address. In theory, it should be impossible for _address and the smôl Power Board AAA's I2C address to not be the same, but you never know... </p>
+<p>Reads the smôl Power Board AAA's I2C address and confirms it matches _address. </p>
 <p>Returns true if we get a reply from the I2C device.</p>
 <dl class="section return"><dt>Returns</dt><dd>True if communication with the Power Board was successful, otherwise false. </dd></dl>
 

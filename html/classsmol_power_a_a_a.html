@@ -90,16 +90,17 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a93c5f7095b4452b5883b6a9cca1eaf57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Just for fun, read back the Power Board's I2C address. This proves that I2C communication is possible and that the Power Board has the correct address stored in eeprom.  <a href="classsmol_power_a_a_a.html#a93c5f7095b4452b5883b6a9cca1eaf57">More...</a><br /></td></tr>
 <tr class="separator:a93c5f7095b4452b5883b6a9cca1eaf57"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7585e29e2ad25b713a1b4758e99dfda7"><td class="memItemLeft" align="right" valign="top">byte&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmol_power_a_a_a.html#a7585e29e2ad25b713a1b4758e99dfda7">getResetReason</a> ()</td></tr>
-<tr class="memdesc:a7585e29e2ad25b713a1b4758e99dfda7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read the reason for the ATtiny43U's most recent reset. The reset reason is updated as soon as the code starts. The four MCU STatus Register Flags are read. If the ATtiny43U found that its eeprom was corrupt when the code started, SFE_AAA_EEPROM_CORRUPT_ON_RESET will be set indicating that the eeprom settings have been reset to the default values.  <a href="classsmol_power_a_a_a.html#a7585e29e2ad25b713a1b4758e99dfda7">More...</a><br /></td></tr>
+<tr class="memdesc:a7585e29e2ad25b713a1b4758e99dfda7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read the reason for the ATtiny43U's most recent reset.  <a href="classsmol_power_a_a_a.html#a7585e29e2ad25b713a1b4758e99dfda7">More...</a><br /></td></tr>
 <tr class="separator:a7585e29e2ad25b713a1b4758e99dfda7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a15e19daf22b505397422a2f5b5f267fe"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmol_power_a_a_a.html#a15e19daf22b505397422a2f5b5f267fe">getTemperature</a> ()</td></tr>
-<tr class="memdesc:a15e19daf22b505397422a2f5b5f267fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read the ATtiny43U's internal temperature. TO DO: Add temperature calibration / correction functionality.  <a href="classsmol_power_a_a_a.html#a15e19daf22b505397422a2f5b5f267fe">More...</a><br /></td></tr>
+<tr class="memdesc:a15e19daf22b505397422a2f5b5f267fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read the ATtiny43U's internal temperature. <br  />
+TO DO: Add temperature calibration / correction functionality.  <a href="classsmol_power_a_a_a.html#a15e19daf22b505397422a2f5b5f267fe">More...</a><br /></td></tr>
 <tr class="separator:a15e19daf22b505397422a2f5b5f267fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb123b6b74c3a4100affae3d86dac39f"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmol_power_a_a_a.html#acb123b6b74c3a4100affae3d86dac39f">getBatteryVoltage</a> ()</td></tr>
-<tr class="memdesc:acb123b6b74c3a4100affae3d86dac39f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read the ATtiny43U's battery voltage (VBAT). We need to read two bytes (uint16_t, little endian) from SFE_AAA_REGISTER_VBAT. This will be the raw 10-bit ADC reading. We need to manually convert this to voltage using the selected voltage reference. The ADC has a built-in divide-by-2 circuit, so we can measure up to 2*VCC or 2.2V depending on the reference.  <a href="classsmol_power_a_a_a.html#acb123b6b74c3a4100affae3d86dac39f">More...</a><br /></td></tr>
+<tr class="memdesc:acb123b6b74c3a4100affae3d86dac39f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read the ATtiny43U's battery voltage (VBAT).  <a href="classsmol_power_a_a_a.html#acb123b6b74c3a4100affae3d86dac39f">More...</a><br /></td></tr>
 <tr class="separator:acb123b6b74c3a4100affae3d86dac39f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac143baf5fa89b698bf65dd2f3b497882"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmol_power_a_a_a.html#ac143baf5fa89b698bf65dd2f3b497882">measureVCC</a> ()</td></tr>
-<tr class="memdesc:ac143baf5fa89b698bf65dd2f3b497882"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measure the ATtiny43U's VCC by reading the 1.1V internal reference via the ADC. This allows us to work out what VCC is. We need to read two bytes (uint16_t, little endian) from SFE_AAA_REGISTER_VBAT. This will be the raw 10-bit ADC reading. We need to manually convert this to voltage. The ATtiny43U will automatically select VCC as the reference. There is no need to do it here.  <a href="classsmol_power_a_a_a.html#ac143baf5fa89b698bf65dd2f3b497882">More...</a><br /></td></tr>
+<tr class="memdesc:ac143baf5fa89b698bf65dd2f3b497882"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measure the ATtiny43U's VCC by reading the 1.1V internal reference via the ADC.  <a href="classsmol_power_a_a_a.html#ac143baf5fa89b698bf65dd2f3b497882">More...</a><br /></td></tr>
 <tr class="separator:ac143baf5fa89b698bf65dd2f3b497882"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8627bdf60df4b5441fecd6930594020b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmol_power_a_a_a.html#a8627bdf60df4b5441fecd6930594020b">setADCVoltageReference</a> (<a class="el" href="_spark_fun__smol___power___board___a_a_a___constants_8h.html#a897ee17e24594f8ef65f904e2a254b1a">sfe_power_board_aaa_ADC_ref_e</a> ref)</td></tr>
 <tr class="memdesc:a8627bdf60df4b5441fecd6930594020b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the ATtiny43U's ADC voltage reference to VCC or the internal 1.1V reference.  <a href="classsmol_power_a_a_a.html#a8627bdf60df4b5441fecd6930594020b">More...</a><br /></td></tr>
@@ -199,8 +200,9 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Read the ATtiny43U's battery voltage (VBAT). We need to read two bytes (uint16_t, little endian) from SFE_AAA_REGISTER_VBAT. This will be the raw 10-bit ADC reading. We need to manually convert this to voltage using the selected voltage reference. The ADC has a built-in divide-by-2 circuit, so we can measure up to 2*VCC or 2.2V depending on the reference. </p>
+<p>Read the ATtiny43U's battery voltage (VBAT). </p>
 <dl class="section return"><dt>Returns</dt><dd>The battery voltage in Volts or -99.0 if an error occurred. </dd></dl>
+<p>This function reads two bytes (uint16_t, little endian) from SFE_AAA_REGISTER_VBAT. This will be the raw 10-bit ADC reading. We need to manually convert this to voltage using the selected voltage reference. The ADC has a built-in divide-by-2 circuit, so we can measure up to 2*VCC or 2.2V depending on the reference.</p>
 
 </div>
 </div>
@@ -266,8 +268,15 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Read the reason for the ATtiny43U's most recent reset. The reset reason is updated as soon as the code starts. The four MCU STatus Register Flags are read. If the ATtiny43U found that its eeprom was corrupt when the code started, SFE_AAA_EEPROM_CORRUPT_ON_RESET will be set indicating that the eeprom settings have been reset to the default values. </p>
-<dl class="section return"><dt>Returns</dt><dd>The reset reason: the logical OR of: SFE_AAA_RESET_REASON_PORF SFE_AAA_RESET_REASON_EXTRF SFE_AAA_RESET_REASON_BORF SFE_AAA_RESET_REASON_WDRF SFE_AAA_EEPROM_CORRUPT_ON_RESET SFE_AAA_EEPROM_COMM_ERROR </dd></dl>
+<p>Read the reason for the ATtiny43U's most recent reset. </p>
+<dl class="section return"><dt>Returns</dt><dd>The reset reason: the logical OR of: <br  />
+SFE_AAA_RESET_REASON_PORF <br  />
+SFE_AAA_RESET_REASON_EXTRF <br  />
+SFE_AAA_RESET_REASON_BORF <br  />
+SFE_AAA_RESET_REASON_WDRF <br  />
+SFE_AAA_EEPROM_CORRUPT_ON_RESET <br  />
+SFE_AAA_COMM_ERROR </dd></dl>
+<p>The reset reason is updated as soon as the ATtiny43U starts. The four MCU STatus Register Flags are read. If the ATtiny43U found that its eeprom was corrupt when the code started, SFE_AAA_EEPROM_CORRUPT_ON_RESET will be set indicating that the eeprom settings have been reset to the default values.</p>
 
 </div>
 </div>
@@ -286,7 +295,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Read the ATtiny43U's internal temperature. TO DO: Add temperature calibration / correction functionality. </p>
+<p>Read the ATtiny43U's internal temperature. <br  />
+TO DO: Add temperature calibration / correction functionality. </p>
 <dl class="section return"><dt>Returns</dt><dd>The temperature in Degrees Centigrade / Celcius or -273.15 if an error occured. </dd></dl>
 <p>To read the approximate temperature, we need to read two bytes (uint16_t, little endian) from SFE_AAA_REGISTER_TEMPERATURE. These will be the raw ADC reading which we need to convert to Degrees C. The ATtiny43U will automatically use the 1.1V internal reference for the conversion. There is no need to select it here. The sensitivity is approximately 1 LSB/°C with 25°C reading as 300 ADU.</p>
 
@@ -347,8 +357,9 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Measure the ATtiny43U's VCC by reading the 1.1V internal reference via the ADC. This allows us to work out what VCC is. We need to read two bytes (uint16_t, little endian) from SFE_AAA_REGISTER_VBAT. This will be the raw 10-bit ADC reading. We need to manually convert this to voltage. The ATtiny43U will automatically select VCC as the reference. There is no need to do it here. </p>
+<p>Measure the ATtiny43U's VCC by reading the 1.1V internal reference via the ADC. </p>
 <dl class="section return"><dt>Returns</dt><dd>The battery voltage in Volts or -99.0 if an error occurred. </dd></dl>
+<p>By reading the 1.1V internal reference we can work out what VCC is. We need to read two bytes (uint16_t, little endian) from SFE_AAA_REGISTER_VBAT. This will be the raw 10-bit ADC reading. We need to manually convert this to voltage. The ATtiny43U will automatically select VCC as the reference. There is no need to do it here.</p>
 
 </div>
 </div>
