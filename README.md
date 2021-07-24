@@ -22,7 +22,7 @@ This library can be installed through the Arduino Library Manager: please search
 
 ## Documentation
 
-- **[Doxygen documentation](./docs/index.html)** - Documentation generated with [Doxygen](https://www.doxygen.nl/index.html)
+- **[Doxygen documentation](./rtf/refman.rtf)** - Rich Text Formatdocumentation generated with [Doxygen](https://www.doxygen.nl/index.html)
 - **[Installing an Arduino Library Guide](https://learn.sparkfun.com/tutorials/installing-an-arduino-library)** - Basic information on how to install an Arduino library.
 
 ## License Information
