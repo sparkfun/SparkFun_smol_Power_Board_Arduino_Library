@@ -61,8 +61,8 @@ bool SMOL_POWER_AAA_IO::isConnected()
     _i2cPort->beginTransmission(_address);
     _i2cPort->write(SFE_AAA_REGISTER_I2C_ADDRESS);
     _i2cPort->endTransmission(false); //Don't release bus
-    byte bytesReturned = _i2cPort->requestFrom(_address, SFE_AAA_REGISTER_I2C_ADDRESS_LENGTH);
-    if (bytesReturned != SFE_AAA_REGISTER_I2C_ADDRESS_LENGTH)
+    byte bytesReturned = _i2cPort->requestFrom(_address, (byte)1);
+    if (bytesReturned != 1)
         return (false);
     byte incomingByte = _i2cPort->read();
     if (incomingByte == _address)
@@ -80,9 +80,10 @@ bool SMOL_POWER_AAA_IO::isConnected()
             A pointer to the byte array to be written.
     @param  packetLength
             The number of bytes to be written.
+    @return True if communication with the Power Board was successful, otherwise false.
 */
 /**************************************************************************/
-void SMOL_POWER_AAA_IO::writeMultipleBytes(byte registerAddress, const byte* buffer, byte const packetLength)
+bool SMOL_POWER_AAA_IO::writeMultipleBytes(byte registerAddress, const byte* buffer, byte const packetLength)
 {
   _i2cPort->beginTransmission(_address);
   _i2cPort->write(registerAddress);
@@ -90,7 +91,7 @@ void SMOL_POWER_AAA_IO::writeMultipleBytes(byte registerAddress, const byte* buf
   for (byte i = 0; i < packetLength; i++)
     _i2cPort->write(buffer[i]);
 
-  _i2cPort->endTransmission();
+  return (_i2cPort->endTransmission() == 0);
 }
 
 /**************************************************************************/
@@ -114,7 +115,8 @@ bool SMOL_POWER_AAA_IO::readMultipleBytes(byte registerAddress, byte* buffer, by
 
   byte bytesReturned = _i2cPort->requestFrom(_address, packetLength);
 
-  for (byte i = 0; (i < bytesReturned) && (i < packetLength) && _i2cPort->available(); i++)
+  byte i;
+  for (i = 0; (i < bytesReturned) && (i < packetLength) && _i2cPort->available(); i++)
     buffer[i] = _i2cPort->read();
 
   return ((bytesReturned == packetLength) && (i == packetLength));
@@ -137,7 +139,7 @@ bool SMOL_POWER_AAA_IO::readSingleByte(byte registerAddress, byte* buffer)
   _i2cPort->write(registerAddress);
   _i2cPort->endTransmission(false); //Don't release bus
 
-  byte bytesReturned = _i2cPort->requestFrom(_address, 1);
+  byte bytesReturned = _i2cPort->requestFrom(_address, (byte)1);
 
   *buffer = _i2cPort->read();
 
@@ -151,12 +153,13 @@ bool SMOL_POWER_AAA_IO::readSingleByte(byte registerAddress, byte* buffer)
             The (software) register address being written to.
     @param  value
             The data byte to be written.
+    @return True if communication with the Power Board was successful, otherwise false.
 */
 /**************************************************************************/
-void SMOL_POWER_AAA_IO::writeSingleByte(byte registerAddress, byte const value)
+bool SMOL_POWER_AAA_IO::writeSingleByte(byte registerAddress, byte const value)
 {
   _i2cPort->beginTransmission(_address);
   _i2cPort->write(registerAddress);
   _i2cPort->write(value);
-  _i2cPort->endTransmission();
+  return (_i2cPort->endTransmission() == 0);
 }

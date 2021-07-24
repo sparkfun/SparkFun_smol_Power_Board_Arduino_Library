@@ -22,7 +22,7 @@
 
 //Platform specific configurations
 
-#ifndef I2C_BUFFER_LENGTH
+#if !defined(I2C_BUFFER_LENGTH) && !defined(ARDUINO_ARCH_ESP32)
 
 //The catch-all default is 32
 #define I2C_BUFFER_LENGTH 32
@@ -44,6 +44,8 @@
 #define SFE_AAA_RESET_REASON_WDRF           (1 << SFE_AAA_RESET_REASON_WDRF_BIT)        ///< Flag to indicate if the MCUSR WDRF Flag was set when the ATtiny43U came out of reset
 #define SFE_AAA_EEPROM_CORRUPT_ON_RESET_BIT 4                                           ///< Bit position of the eeprom memory corrupt on reset flag
 #define SFE_AAA_EEPROM_CORRUPT_ON_RESET     (1 << SFE_AAA_EEPROM_CORRUPT_ON_RESET_BIT)  ///< Flag to indicate if the ATtiny43U's eeprom memory was corrupt on reset and has been overwritten with the default settings
+#define SFE_AAA_COMM_ERROR_BIT              7                                           ///< Bit position of the communication error flag
+#define SFE_AAA_COMM_ERROR                  (1 << SFE_AAA_COMM_ERROR_BIT)               ///< Flag to indicate if a communication error occurred while fetching the reset reason
 
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
@@ -56,7 +58,9 @@ typedef enum
   SFE_AAA_REGISTER_VBAT,
   SFE_AAA_REGISTER_VCC_VOLTAGE,
   SFE_AAA_REGISTER_ADC_REFERENCE,
-  SFE_AAA_REGISTER_WDT_PRESCALER
+  SFE_AAA_REGISTER_WDT_PRESCALER,
+  SFE_AAA_REGISTER_POWERDOWN_DURATION,
+  SFE_AAA_REGISTER_POWERDOWN_NOW
 } sfe_power_board_aaa_registers_e;
 
 /** Allow the user to select either VCC or the internal 1.1V reference as the reference for VBAT ADC measurements */
@@ -70,16 +74,17 @@ typedef enum
 /** The Watchdog Timer Prescale select */
 typedef enum 
 {
-  SFE_AAA_WDT_PRESCALE_2K = 0,  //2K cycles = 16ms timeout
-  SFE_AAA_WDT_PRESCALE_4K,      //4K cycles = 32ms timeout
-  SFE_AAA_WDT_PRESCALE_8K,      //8K cycles = 64ms timeout
-  SFE_AAA_WDT_PRESCALE_16K,     //16K cycles = 0.125s timeout
-  SFE_AAA_WDT_PRESCALE_32K,     //32K cycles = 0.25s timeout
-  SFE_AAA_WDT_PRESCALE_64K,     //64K cycles = 0.5s timeout
-  SFE_AAA_WDT_PRESCALE_128K,    //128K cycles = 1.0s timeout
-  SFE_AAA_WDT_PRESCALE_256K,    //256K cycles = 2.0s timeout
-  SFE_AAA_WDT_PRESCALE_512K,    //512K cycles = 4.0s timeout
-  SFE_AAA_WDT_PRESCALE_1024K    //1024K cycles = 8.0s timeout
+  SFE_AAA_WDT_PRESCALE_2K = 0,    //2K cycles = 16ms timeout
+  SFE_AAA_WDT_PRESCALE_4K,        //4K cycles = 32ms timeout
+  SFE_AAA_WDT_PRESCALE_8K,        //8K cycles = 64ms timeout
+  SFE_AAA_WDT_PRESCALE_16K,       //16K cycles = 0.125s timeout
+  SFE_AAA_WDT_PRESCALE_32K,       //32K cycles = 0.25s timeout
+  SFE_AAA_WDT_PRESCALE_64K,       //64K cycles = 0.5s timeout
+  SFE_AAA_WDT_PRESCALE_128K,      //128K cycles = 1.0s timeout
+  SFE_AAA_WDT_PRESCALE_256K,      //256K cycles = 2.0s timeout
+  SFE_AAA_WDT_PRESCALE_512K,      //512K cycles = 4.0s timeout
+  SFE_AAA_WDT_PRESCALE_1024K,     //1024K cycles = 8.0s timeout
+  SFE_AAA_WDT_PRESCALE_UNDEFINED  //Something bad has happened...
 } sfe_power_board_aaa_WDT_prescale_e;
 
 #endif // /__SFE_SMOL_POWER_BOARD_AAA_CONSTANTS__

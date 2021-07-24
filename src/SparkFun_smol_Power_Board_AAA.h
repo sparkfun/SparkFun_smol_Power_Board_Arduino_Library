@@ -34,7 +34,7 @@ public:
 
   bool begin(byte deviceAddress = SFE_AAA_DEFAULT_I2C_ADDRESS, TwoWire &wirePort = Wire);
   bool isConnected();
-  void setI2CAddress(byte address);
+  bool setI2CAddress(byte address);
   byte getI2CAddress();
   byte getResetReason();
   float getTemperature();
@@ -44,14 +44,15 @@ public:
   sfe_power_board_aaa_ADC_ref_e getADCVoltageReference();
   bool setWatchdogTimerPrescaler(sfe_power_board_aaa_WDT_prescale_e prescaler);
   sfe_power_board_aaa_WDT_prescale_e getWatchdogTimerPrescaler();
-  bool setPowerdownDurationWDTInts(uin16_t duration);
-  bool getPowerDownDurationWDTInts(uin16_t *duration);
-  void powerDownNow();
+  bool setPowerdownDurationWDTInts(uint16_t duration);
+  bool getPowerDownDurationWDTInts(uint16_t *duration);
+  bool powerDownNow();
 
 private:
   // I2C communication object instance
   SMOL_POWER_AAA_IO smolPowerAAA_io;
-
+  
+  byte computeCRC8(byte data[], byte len);
 };
 
 #endif // /__SFE_SMOL_POWER_BOARD_AAA__

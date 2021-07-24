@@ -46,13 +46,13 @@ public:
   bool readSingleByte(byte registerAddress, byte* buffer);
 
   /** Writes a single byte into a register. */
-  void writeSingleByte(byte registerAddress, byte value);
+  bool writeSingleByte(byte registerAddress, byte value);
 
   /** Reads multiple bytes from a register into buffer byte array. */
   bool readMultipleBytes(byte registerAddress, byte* buffer, byte packetLength);
 
   /** Writes multiple bytes to register from buffer byte array. */
-  void writeMultipleBytes(byte registerAddress, const byte* buffer, byte packetLength);
+  bool writeMultipleBytes(byte registerAddress, const byte* buffer, byte packetLength);
 };
 
 #endif // /__SFE_SMOL_POWER_BOARD_AAA_IO__
