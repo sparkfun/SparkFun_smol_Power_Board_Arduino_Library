@@ -43,13 +43,13 @@ public:
   bool isConnected();
 
   /** Read a single byte from a register. */
-  bool readSingleByte(byte registerAddress, byte* buffer);
+  bool readSingleByte(byte registerAddress, byte* buffer, byte waitMS = 0);
 
   /** Writes a single byte into a register. */
   bool writeSingleByte(byte registerAddress, byte value);
 
   /** Reads multiple bytes from a register into buffer byte array. */
-  bool readMultipleBytes(byte registerAddress, byte* buffer, byte packetLength);
+  bool readMultipleBytes(byte registerAddress, byte* buffer, byte packetLength, byte waitMS = 0);
 
   /** Writes multiple bytes to register from buffer byte array. */
   bool writeMultipleBytes(byte registerAddress, const byte* buffer, byte packetLength);

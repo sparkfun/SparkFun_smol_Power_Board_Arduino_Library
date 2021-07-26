@@ -58,7 +58,7 @@ bool SMOL_POWER_AAA_IO::isConnected()
   {
     _i2cPort->beginTransmission(_address);
     _i2cPort->write(SFE_AAA_REGISTER_I2C_ADDRESS);
-    _i2cPort->endTransmission(false); //Don't release bus
+    _i2cPort->endTransmission(); // Send data and release the bus (the 43 (WireS) doesn't like it if the Controller holds the bus!)
     byte bytesReturned = _i2cPort->requestFrom(_address, (byte)1);
     if (bytesReturned != 1)
         return (false);
@@ -102,22 +102,27 @@ bool SMOL_POWER_AAA_IO::writeMultipleBytes(byte registerAddress, const byte* buf
             A pointer to the byte array which will hold the read data.
     @param  packetLength
             The number of bytes to be read.
+    @param  waitMS
+            The number of ms to wait before attempting to read the data.
+            This gives the ATtiny43U time to collect the data.
     @return True if the data was read successfully, otherwise false.
 */
 /**************************************************************************/
-bool SMOL_POWER_AAA_IO::readMultipleBytes(byte registerAddress, byte* buffer, byte const packetLength)
+bool SMOL_POWER_AAA_IO::readMultipleBytes(byte registerAddress, byte* buffer, byte packetLength, byte waitMS)
 {
   _i2cPort->beginTransmission(_address);
   _i2cPort->write(registerAddress);
-  _i2cPort->endTransmission(false); //Don't release bus
+  _i2cPort->endTransmission(); // Send data and release the bus (the 43 (WireS) doesn't like it if the Controller holds the bus!)
+
+  delay(waitMS); // Give the ATtiny43U time to collect the requested data
 
   byte bytesReturned = _i2cPort->requestFrom(_address, packetLength);
 
   byte i;
-  for (i = 0; (i < bytesReturned) && (i < packetLength) && _i2cPort->available(); i++)
+  for (i = 0; (i < bytesReturned); i++)
     buffer[i] = _i2cPort->read();
 
-  return ((bytesReturned == packetLength) && (i == packetLength));
+  return (bytesReturned == packetLength);
 }
 
 /**************************************************************************/
@@ -128,14 +133,19 @@ bool SMOL_POWER_AAA_IO::readMultipleBytes(byte registerAddress, byte* buffer, by
             The (software) register address being read from.
     @param  buffer
             A pointer to the byte which will hold the read data.
+    @param  waitMS
+            The number of ms to wait before attempting to read the data.
+            This gives the ATtiny43U time to collect the data.
     @return True if the data byte was read successfully, otherwise false.
 */
 /**************************************************************************/
-bool SMOL_POWER_AAA_IO::readSingleByte(byte registerAddress, byte* buffer)
+bool SMOL_POWER_AAA_IO::readSingleByte(byte registerAddress, byte* buffer, byte waitMS)
 {
   _i2cPort->beginTransmission(_address);
   _i2cPort->write(registerAddress);
-  _i2cPort->endTransmission(false); //Don't release bus
+  _i2cPort->endTransmission(); // Send data and release the bus (the 43 (WireS) doesn't like it if the Controller holds the bus!)
+
+  delay(waitMS); // Give the ATtiny43U time to collect the requested data
 
   byte bytesReturned = _i2cPort->requestFrom(_address, (byte)1);
 
