@@ -35,9 +35,13 @@ void setup()
   Serial.println(F("smôl Power Board AAA example"));
   Serial.println();
 
+  Wire.begin();
+
   if (myPowerBoard.begin() == false) // Begin communication with the power board using the default I2C address (0x50) and the Wire port
   {
     Serial.println(F("Could not communicate with the power board. Please check the I2C connections. Freezing..."));
+    while (1)
+      ;
   }
 
   Serial.println(F("The ATtiny43U on the smôl Power Board AAA can read the battery voltage via the ADC."));

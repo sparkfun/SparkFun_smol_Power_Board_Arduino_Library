@@ -134,7 +134,7 @@ float smolPowerAAA::getTemperature()
       The sensitivity is approximately 1 LSB/°C with 25°C reading as 300 ADU. */
   byte theBytes[2];
   float result = -273.15; // Return -273.15 if readMultipleBytes fails
-  if (smolPowerAAA_io.readMultipleBytes(SFE_AAA_REGISTER_TEMPERATURE, theBytes, 2))
+  if (smolPowerAAA_io.readMultipleBytes(SFE_AAA_REGISTER_TEMPERATURE, theBytes, 2, 50))
   {
     uint16_t rawTemp = (((uint16_t)theBytes[1]) << 8) | theBytes[0]; // Little endian
     result = 25.0 + ((float)rawTemp) - 300.0; // Convert to °C
@@ -159,7 +159,7 @@ float smolPowerAAA::getBatteryVoltage()
   if (ref == SFE_AAA_USE_ADC_REF_UNDEFINED)
     return (result); // Return now if getBatteryVoltageReference failed
   byte theBytes[2];
-  if (smolPowerAAA_io.readMultipleBytes(SFE_AAA_REGISTER_VBAT, theBytes, 2))
+  if (smolPowerAAA_io.readMultipleBytes(SFE_AAA_REGISTER_VBAT, theBytes, 2, 50))
   {
     uint16_t rawVolts = (((uint16_t)theBytes[1]) << 8) | theBytes[0]; // Little endian
     result = ((float)rawVolts) / 1023.0; // Convert 10-bit ADC result to the fraction of full range
@@ -196,7 +196,7 @@ float smolPowerAAA::measureVCC()
       no need to do it here. */
   float result = -99.0; // Return -99.0V if something bad happened.
   byte theBytes[2];
-  if (smolPowerAAA_io.readMultipleBytes(SFE_AAA_REGISTER_VCC_VOLTAGE, theBytes, 2))
+  if (smolPowerAAA_io.readMultipleBytes(SFE_AAA_REGISTER_VCC_VOLTAGE, theBytes, 2, 50))
   {
     uint16_t rawVolts = (((uint16_t)theBytes[1]) << 8) | theBytes[0]; // Little endian
     float fractionFullRange = ((float)rawVolts) / 1023.0; // Convert 10-bit ADC result to the fraction of full range
@@ -225,6 +225,7 @@ bool smolPowerAAA::setADCVoltageReference(sfe_power_board_aaa_ADC_ref_e ref)
   bytesToSend[0] = (byte)ref;
   bytesToSend[1] = computeCRC8(bytesToSend, 1);
   smolPowerAAA_io.writeMultipleBytes(SFE_AAA_REGISTER_ADC_REFERENCE, bytesToSend, 2);
+  delay(50);
   return (getADCVoltageReference() == ref); //Check the reference was modified correctly by reading it back again
 }
 
@@ -265,6 +266,7 @@ bool smolPowerAAA::setWatchdogTimerPrescaler(sfe_power_board_aaa_WDT_prescale_e 
   bytesToSend[0] = (byte)prescaler;
   bytesToSend[1] = computeCRC8(bytesToSend, 1);
   smolPowerAAA_io.writeMultipleBytes(SFE_AAA_REGISTER_WDT_PRESCALER, bytesToSend, 2);
+  delay(50);
   return (getWatchdogTimerPrescaler() == prescaler); //Check the prescaler was modified correctly by reading it back again
 }
 
@@ -299,10 +301,11 @@ bool smolPowerAAA::setPowerdownDurationWDTInts(uint16_t duration)
   /** To change the power-down duration, we need to write three bytes to the SFE_AAA_REGISTER_POWERDOWN_DURATION register.
       The first two are the duration in uint16_t little endian format. The third is a one byte CRC of the duration. */
   byte bytesToSend[3];
-  bytesToSend[0] = (byte)(duration >> 8);
-  bytesToSend[1] = (byte)(duration & 0xFF);
+  bytesToSend[0] = (byte)(duration & 0xFF); // Little endian
+  bytesToSend[1] = (byte)(duration >> 8);
   bytesToSend[2] = computeCRC8(bytesToSend, 2);
   smolPowerAAA_io.writeMultipleBytes(SFE_AAA_REGISTER_POWERDOWN_DURATION, bytesToSend, 2);
+  delay(50);
   uint16_t readDuration;
   bool result = getPowerDownDurationWDTInts(&readDuration); //Check the duration was modified correctly by reading it back again
   return (result && (readDuration == duration));

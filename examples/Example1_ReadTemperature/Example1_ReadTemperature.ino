@@ -23,6 +23,8 @@
  * 
  */
 
+#include <Wire.h>
+
 #include <SparkFun_smol_Power_Board_AAA.h> //Click here to get the library:  http://librarymanager/All#SparkFun_smol_Power_Board_AAA
 
 smolPowerAAA myPowerBoard;
@@ -35,9 +37,13 @@ void setup()
   Serial.println(F("smôl Power Board AAA example"));
   Serial.println();
 
+  Wire.begin();
+
   if (myPowerBoard.begin() == false) // Begin communication with the power board using the default I2C address (0x50) and the Wire port
   {
     Serial.println(F("Could not communicate with the power board. Please check the I2C connections. Freezing..."));
+    while (1)
+      ;
   }
 
   float temperature = myPowerBoard.getTemperature(); // Get the temperature
