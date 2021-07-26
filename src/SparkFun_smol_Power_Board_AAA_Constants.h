@@ -60,7 +60,8 @@ typedef enum
   SFE_AAA_REGISTER_ADC_REFERENCE,
   SFE_AAA_REGISTER_WDT_PRESCALER,
   SFE_AAA_REGISTER_POWERDOWN_DURATION,
-  SFE_AAA_REGISTER_POWERDOWN_NOW
+  SFE_AAA_REGISTER_POWERDOWN_NOW,
+  SFE_AAA_REGISTER_FIRMWARE_VERSION
 } sfe_power_board_aaa_registers_e;
 
 /** Allow the user to select either VCC or the internal 1.1V reference as the reference for VBAT ADC measurements */

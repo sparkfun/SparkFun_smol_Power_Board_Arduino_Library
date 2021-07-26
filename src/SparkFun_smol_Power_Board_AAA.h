@@ -47,6 +47,7 @@ public:
   bool setPowerdownDurationWDTInts(uint16_t duration);
   bool getPowerDownDurationWDTInts(uint16_t *duration);
   bool powerDownNow();
+  byte getFirmwareVersion();
 
 private:
   // I2C communication object instance

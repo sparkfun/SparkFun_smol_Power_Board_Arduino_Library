@@ -348,6 +348,23 @@ bool smolPowerAAA::powerDownNow()
 
 /**************************************************************************/
 /*!
+    @brief  Get the Power Board firmware version.
+    @return The firmware version if read successfully, 0x00 if not.
+            The firmware version is: Major Version (4-bits << 4) | Minor Version (4-bits).
+            E.g. 0x10 is: v1.0, Major Version 1, Minor Version 0.
+*/
+/**************************************************************************/
+byte smolPowerAAA::getFirmwareVersion()
+{
+  byte version;
+  bool result = smolPowerAAA_io.readSingleByte(SFE_AAA_REGISTER_FIRMWARE_VERSION, &version);
+  if (!result)
+    version = 0;
+  return (version);
+}
+
+/**************************************************************************/
+/*!
     @brief  Given an array of bytes, this calculates the CRC8 for those bytes.
             From: http://www.sunshine2k.de/articles/coding/crc/understanding_crc.html
             Tested with: http://www.sunshine2k.de/coding/javascript/crc/crc_js.html
