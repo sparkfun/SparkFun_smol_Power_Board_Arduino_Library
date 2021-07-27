@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['readmultiplebytes_11',['readMultipleBytes',['../class_s_m_o_l___p_o_w_e_r___a_a_a___i_o.html#aae017c726632eba0a02ce02573853d37',1,'SMOL_POWER_AAA_IO']]],
-  ['readsinglebyte_12',['readSingleByte',['../class_s_m_o_l___p_o_w_e_r___a_a_a___i_o.html#a1c56f35627d34029e9a7ef97f2f9e15f',1,'SMOL_POWER_AAA_IO']]]
+  ['readmultiplebytes_12',['readMultipleBytes',['../class_s_m_o_l___p_o_w_e_r___a_a_a___i_o.html#a2dd1bd485560a475f0d7d8b96c08c603',1,'SMOL_POWER_AAA_IO']]],
+  ['readsinglebyte_13',['readSingleByte',['../class_s_m_o_l___p_o_w_e_r___a_a_a___i_o.html#a72cad49d9c17ea4f4e0c6ced20210b27',1,'SMOL_POWER_AAA_IO']]]
 ];

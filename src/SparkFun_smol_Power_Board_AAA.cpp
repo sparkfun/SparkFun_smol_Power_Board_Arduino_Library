@@ -306,7 +306,7 @@ bool smolPowerAAA::setPowerdownDurationWDTInts(uint16_t duration)
   bytesToSend[0] = (byte)(duration & 0xFF); // Little endian
   bytesToSend[1] = (byte)(duration >> 8);
   bytesToSend[2] = computeCRC8(bytesToSend, 2);
-  smolPowerAAA_io.writeMultipleBytes(SFE_AAA_REGISTER_POWERDOWN_DURATION, bytesToSend, 2);
+  smolPowerAAA_io.writeMultipleBytes(SFE_AAA_REGISTER_POWERDOWN_DURATION, bytesToSend, 3);
   delay(SFE_AAA_EEPROM_UPDATE_DELAY);
   uint16_t readDuration;
   bool result = getPowerDownDurationWDTInts(&readDuration); //Check the duration was modified correctly by reading it back again

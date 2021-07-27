@@ -123,6 +123,9 @@ TO DO: Add temperature calibration / correction functionality.  <a href="classsm
 <tr class="memitem:a37f460f76a97cf8452bd7db793598464"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmol_power_a_a_a.html#a37f460f76a97cf8452bd7db793598464">powerDownNow</a> ()</td></tr>
 <tr class="memdesc:a37f460f76a97cf8452bd7db793598464"><td class="mdescLeft">&#160;</td><td class="mdescRight">Power down the system now. The smôl bus power will be disabled. The ATtiny43U will wake up and turn the power back on after SFE_AAA_REGISTER_POWERDOWN_DURATION WDT interrupts.  <a href="classsmol_power_a_a_a.html#a37f460f76a97cf8452bd7db793598464">More...</a><br /></td></tr>
 <tr class="separator:a37f460f76a97cf8452bd7db793598464"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99ab747b19d935f398e8ca6a6c08e44b"><td class="memItemLeft" align="right" valign="top">byte&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmol_power_a_a_a.html#a99ab747b19d935f398e8ca6a6c08e44b">getFirmwareVersion</a> ()</td></tr>
+<tr class="memdesc:a99ab747b19d935f398e8ca6a6c08e44b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the Power Board firmware version.  <a href="classsmol_power_a_a_a.html#a99ab747b19d935f398e8ca6a6c08e44b">More...</a><br /></td></tr>
+<tr class="separator:a99ab747b19d935f398e8ca6a6c08e44b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Communication interface for the SparkFun smôl Power Board AAA </p>
@@ -203,6 +206,26 @@ TO DO: Add temperature calibration / correction functionality.  <a href="classsm
 <p>Read the ATtiny43U's battery voltage (VBAT). </p>
 <dl class="section return"><dt>Returns</dt><dd>The battery voltage in Volts or -99.0 if an error occurred. </dd></dl>
 <p>This function reads two bytes (uint16_t, little endian) from SFE_AAA_REGISTER_VBAT. This will be the raw 10-bit ADC reading. We need to manually convert this to voltage using the selected voltage reference. The ADC has a built-in divide-by-2 circuit, so we can measure up to 2*VCC or 2.2V depending on the reference.</p>
+
+</div>
+</div>
+<a id="a99ab747b19d935f398e8ca6a6c08e44b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a99ab747b19d935f398e8ca6a6c08e44b">&#9670;&nbsp;</a></span>getFirmwareVersion()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">byte smolPowerAAA::getFirmwareVersion </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the Power Board firmware version. </p>
+<dl class="section return"><dt>Returns</dt><dd>The firmware version if read successfully, 0x00 if not. The firmware version is: Major Version (4-bits &lt;&lt; 4) | Minor Version (4-bits). E.g. 0x10 is: v1.0, Major Version 1, Minor Version 0. </dd></dl>
 
 </div>
 </div>
@@ -298,7 +321,7 @@ SFE_AAA_COMM_ERROR </dd></dl>
 <p>Read the ATtiny43U's internal temperature. <br  />
 TO DO: Add temperature calibration / correction functionality. </p>
 <dl class="section return"><dt>Returns</dt><dd>The temperature in Degrees Centigrade / Celcius or -273.15 if an error occured. </dd></dl>
-<p>To read the approximate temperature, we need to read two bytes (uint16_t, little endian) from SFE_AAA_REGISTER_TEMPERATURE. These will be the raw ADC reading which we need to convert to Degrees C. The ATtiny43U will automatically use the 1.1V internal reference for the conversion. There is no need to select it here. The sensitivity is approximately 1 LSB/°C with 25°C reading as 300 ADU.</p>
+<p>To read the approximate temperature, we need to read two bytes (uint16_t, little endian) from SFE_AAA_REGISTER_TEMPERATURE. These will be the raw ADC reading which we need to convert to Degrees C. The ATtiny43U will use the 1.1V internal reference for the conversion. There is no need to select it here. The sensitivity is approximately 1 LSB/°C with 25°C reading as 300 ADU.</p>
 
 </div>
 </div>
@@ -359,7 +382,7 @@ TO DO: Add temperature calibration / correction functionality. </p>
 
 <p>Measure the ATtiny43U's VCC by reading the 1.1V internal reference via the ADC. </p>
 <dl class="section return"><dt>Returns</dt><dd>The battery voltage in Volts or -99.0 if an error occurred. </dd></dl>
-<p>By reading the 1.1V internal reference we can work out what VCC is. We need to read two bytes (uint16_t, little endian) from SFE_AAA_REGISTER_VBAT. This will be the raw 10-bit ADC reading. We need to manually convert this to voltage. The ATtiny43U will automatically select VCC as the reference. There is no need to do it here.</p>
+<p>By reading the 1.1V internal reference we can work out what VCC is. We need to read two bytes (uint16_t, little endian) from SFE_AAA_REGISTER_VBAT. This will be the raw 10-bit ADC reading. We need to manually convert this to voltage. The ATtiny43U will automatically select VCC as the reference. There is no need to select it here.</p>
 
 </div>
 </div>

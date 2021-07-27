@@ -83,6 +83,13 @@ Macros</h2></td></tr>
 <tr class="memitem:ac69a9b21616696dc5dc5d3a0d48be48d"><td class="memItemLeft" align="right" valign="top"><a id="ac69a9b21616696dc5dc5d3a0d48be48d"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>SFE_AAA_DEFAULT_I2C_ADDRESS</b>&#160;&#160;&#160;0x50</td></tr>
 <tr class="separator:ac69a9b21616696dc5dc5d3a0d48be48d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28cb07b2fbdc5332f096e5f78f708aaa"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_spark_fun__smol___power___board___a_a_a___constants_8h.html#a28cb07b2fbdc5332f096e5f78f708aaa">SFE_AAA_ADC_READ_DELAY</a>&#160;&#160;&#160;15</td></tr>
+<tr class="memdesc:a28cb07b2fbdc5332f096e5f78f708aaa"><td class="mdescLeft">&#160;</td><td class="mdescRight">The ADC read (eight samples, averaged) takes ~11ms to complete at 4MHz. 15ms provides margin.  <a href="_spark_fun__smol___power___board___a_a_a___constants_8h.html#a28cb07b2fbdc5332f096e5f78f708aaa">More...</a><br /></td></tr>
+<tr class="separator:a28cb07b2fbdc5332f096e5f78f708aaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a048d6a64659e6889e6c779274e6ff538"><td class="memItemLeft" align="right" valign="top"><a id="a048d6a64659e6889e6c779274e6ff538"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_spark_fun__smol___power___board___a_a_a___constants_8h.html#a048d6a64659e6889e6c779274e6ff538">SFE_AAA_EEPROM_UPDATE_DELAY</a>&#160;&#160;&#160;6</td></tr>
+<tr class="memdesc:a048d6a64659e6889e6c779274e6ff538"><td class="mdescLeft">&#160;</td><td class="mdescRight">The eeprom update takes ~4ms to complete at 4MHz. 6ms provides margin. <br /></td></tr>
+<tr class="separator:a048d6a64659e6889e6c779274e6ff538"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4c0d4e3e027ad105e34a1f14494231ef"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_spark_fun__smol___power___board___a_a_a___constants_8h.html#a4c0d4e3e027ad105e34a1f14494231ef">SFE_AAA_RESET_REASON_PORF_BIT</a>&#160;&#160;&#160;0</td></tr>
 <tr class="memdesc:a4c0d4e3e027ad105e34a1f14494231ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bit position of the Power-on Reset Flag.  <a href="_spark_fun__smol___power___board___a_a_a___constants_8h.html#a4c0d4e3e027ad105e34a1f14494231ef">More...</a><br /></td></tr>
 <tr class="separator:a4c0d4e3e027ad105e34a1f14494231ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -139,12 +146,13 @@ Enumerations</h2></td></tr>
 , <b>SFE_AAA_REGISTER_TEMPERATURE</b>
 , <b>SFE_AAA_REGISTER_VBAT</b>
 , <br />
-&#160;&#160;<b>SFE_AAA_REGISTER_VCC_VOLTAGE</b>
+&#160;&#160;<b>SFE_AAA_REGISTER_1V1</b>
 , <b>SFE_AAA_REGISTER_ADC_REFERENCE</b>
 , <b>SFE_AAA_REGISTER_WDT_PRESCALER</b>
 , <b>SFE_AAA_REGISTER_POWERDOWN_DURATION</b>
 , <br />
 &#160;&#160;<b>SFE_AAA_REGISTER_POWERDOWN_NOW</b>
+, <b>SFE_AAA_REGISTER_FIRMWARE_VERSION</b>
 <br />
  }</td></tr>
 <tr class="separator:ac8897faf1bddee32c8fc99c82b9551b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -180,6 +188,23 @@ SparkX smôl ESP32 (SPX-18362): <a href="https://www.sparkfun.com/products/18362
 <p>This library was written by: Paul Clark July 23rd 2021</p>
 <p>Please see LICENSE.md for the license information </p>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a28cb07b2fbdc5332f096e5f78f708aaa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28cb07b2fbdc5332f096e5f78f708aaa">&#9670;&nbsp;</a></span>SFE_AAA_ADC_READ_DELAY</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SFE_AAA_ADC_READ_DELAY&#160;&#160;&#160;15</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The ADC read (eight samples, averaged) takes ~11ms to complete at 4MHz. 15ms provides margin. </p>
+<p>delay durations for the ADC read and eeprom update </p>
+
+</div>
+</div>
 <a id="a4c0d4e3e027ad105e34a1f14494231ef"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4c0d4e3e027ad105e34a1f14494231ef">&#9670;&nbsp;</a></span>SFE_AAA_RESET_REASON_PORF_BIT</h2>
 
