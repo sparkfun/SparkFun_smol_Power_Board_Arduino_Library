@@ -72,7 +72,10 @@ bool smolPowerAAA::setI2CAddress(byte address)
   byte bytesToSend[2];
   bytesToSend[0] = address;
   bytesToSend[1] = computeCRC8(bytesToSend, 1);
-  return (smolPowerAAA_io.writeMultipleBytes(SFE_AAA_REGISTER_I2C_ADDRESS, bytesToSend, 2));
+  bool result = smolPowerAAA_io.writeMultipleBytes(SFE_AAA_REGISTER_I2C_ADDRESS, bytesToSend, 2);
+  if (result)
+    delay(SFE_AAA_EEPROM_UPDATE_DELAY); // Wait for the eeprom to be updated
+  return (result);
 }
 
 /**************************************************************************/
@@ -129,12 +132,12 @@ float smolPowerAAA::getTemperature()
 {
   /** To read the approximate temperature, we need to read two bytes (uint16_t, little endian)
       from SFE_AAA_REGISTER_TEMPERATURE. These will be the raw ADC reading which we
-      need to convert to Degrees C. The ATtiny43U will automatically use the 1.1V
+      need to convert to Degrees C. The ATtiny43U will use the 1.1V
       internal reference for the conversion. There is no need to select it here.
       The sensitivity is approximately 1 LSB/°C with 25°C reading as 300 ADU. */
   byte theBytes[2];
   float result = -273.15; // Return -273.15 if readMultipleBytes fails
-  if (smolPowerAAA_io.readMultipleBytes(SFE_AAA_REGISTER_TEMPERATURE, theBytes, 2, 50))
+  if (smolPowerAAA_io.readMultipleBytes(SFE_AAA_REGISTER_TEMPERATURE, theBytes, 2, SFE_AAA_ADC_READ_DELAY))
   {
     uint16_t rawTemp = (((uint16_t)theBytes[1]) << 8) | theBytes[0]; // Little endian
     result = 25.0 + ((float)rawTemp) - 300.0; // Convert to °C
@@ -159,7 +162,7 @@ float smolPowerAAA::getBatteryVoltage()
   if (ref == SFE_AAA_USE_ADC_REF_UNDEFINED)
     return (result); // Return now if getBatteryVoltageReference failed
   byte theBytes[2];
-  if (smolPowerAAA_io.readMultipleBytes(SFE_AAA_REGISTER_VBAT, theBytes, 2, 50))
+  if (smolPowerAAA_io.readMultipleBytes(SFE_AAA_REGISTER_VBAT, theBytes, 2, SFE_AAA_ADC_READ_DELAY))
   {
     uint16_t rawVolts = (((uint16_t)theBytes[1]) << 8) | theBytes[0]; // Little endian
     result = ((float)rawVolts) / 1023.0; // Convert 10-bit ADC result to the fraction of full range
@@ -193,10 +196,10 @@ float smolPowerAAA::measureVCC()
       We need to read two bytes (uint16_t, little endian) from SFE_AAA_REGISTER_VBAT.
       This will be the raw 10-bit ADC reading. We need to manually convert this to
       voltage. The ATtiny43U will automatically select VCC as the reference. There is
-      no need to do it here. */
+      no need to select it here. */
   float result = -99.0; // Return -99.0V if something bad happened.
   byte theBytes[2];
-  if (smolPowerAAA_io.readMultipleBytes(SFE_AAA_REGISTER_VCC_VOLTAGE, theBytes, 2, 50))
+  if (smolPowerAAA_io.readMultipleBytes(SFE_AAA_REGISTER_1V1, theBytes, 2, SFE_AAA_ADC_READ_DELAY))
   {
     uint16_t rawVolts = (((uint16_t)theBytes[1]) << 8) | theBytes[0]; // Little endian
     float fractionFullRange = ((float)rawVolts) / 1023.0; // Convert 10-bit ADC result to the fraction of full range
@@ -225,7 +228,6 @@ bool smolPowerAAA::setADCVoltageReference(sfe_power_board_aaa_ADC_ref_e ref)
   bytesToSend[0] = (byte)ref;
   bytesToSend[1] = computeCRC8(bytesToSend, 1);
   smolPowerAAA_io.writeMultipleBytes(SFE_AAA_REGISTER_ADC_REFERENCE, bytesToSend, 2);
-  delay(50);
   return (getADCVoltageReference() == ref); //Check the reference was modified correctly by reading it back again
 }
 
@@ -266,7 +268,7 @@ bool smolPowerAAA::setWatchdogTimerPrescaler(sfe_power_board_aaa_WDT_prescale_e 
   bytesToSend[0] = (byte)prescaler;
   bytesToSend[1] = computeCRC8(bytesToSend, 1);
   smolPowerAAA_io.writeMultipleBytes(SFE_AAA_REGISTER_WDT_PRESCALER, bytesToSend, 2);
-  delay(50);
+  delay(SFE_AAA_EEPROM_UPDATE_DELAY);
   return (getWatchdogTimerPrescaler() == prescaler); //Check the prescaler was modified correctly by reading it back again
 }
 
@@ -305,7 +307,7 @@ bool smolPowerAAA::setPowerdownDurationWDTInts(uint16_t duration)
   bytesToSend[1] = (byte)(duration >> 8);
   bytesToSend[2] = computeCRC8(bytesToSend, 2);
   smolPowerAAA_io.writeMultipleBytes(SFE_AAA_REGISTER_POWERDOWN_DURATION, bytesToSend, 2);
-  delay(50);
+  delay(SFE_AAA_EEPROM_UPDATE_DELAY);
   uint16_t readDuration;
   bool result = getPowerDownDurationWDTInts(&readDuration); //Check the duration was modified correctly by reading it back again
   return (result && (readDuration == duration));

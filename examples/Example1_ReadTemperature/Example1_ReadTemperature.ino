@@ -1,5 +1,5 @@
 /*!
- * @file Example1_ReadTemperature
+ * @file Example1_ReadTemperature.ino
  * 
  * @mainpage SparkFun smôl Power Board AAA Arduino Library
  * 
@@ -46,10 +46,17 @@ void setup()
       ;
   }
 
+  byte firmwareVersion = myPowerBoard.getFirmwareVersion(); // Get the firmware version
+
+  Serial.print(F("The firmware version is v"));
+  Serial.print(firmwareVersion >> 4); // Major version is in the MS nibble
+  Serial.print(F("."));
+  Serial.println(firmwareVersion & 0x0F); // Minor version is in the LS nibble
+
   float temperature = myPowerBoard.getTemperature(); // Get the temperature
 
   Serial.print(F("The temperature in Degrees C is: "));
-  Serial.println(temperature);
+  Serial.println(temperature, 0);
 
   if (temperature == -99.0)
   {

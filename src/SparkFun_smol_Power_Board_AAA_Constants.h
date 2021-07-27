@@ -33,6 +33,13 @@
 
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
+/** delay durations for the ADC read and eeprom update */
+#define SFE_AAA_ADC_READ_DELAY              15 ///< The ADC read (eight samples, averaged) takes ~11ms to complete at 4MHz. 15ms provides margin.
+#define SFE_AAA_EEPROM_UPDATE_DELAY         6  ///< The eeprom update takes ~4ms to complete at 4MHz. 6ms provides margin.
+
+
+//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
 /** getResetReason will return these bits */
 #define SFE_AAA_RESET_REASON_PORF_BIT       0                                           ///< Bit position of the Power-on Reset Flag
 #define SFE_AAA_RESET_REASON_PORF           (1 << SFE_AAA_RESET_REASON_PORF_BIT)        ///< Flag to indicate if the MCUSR PORF Flag was set when the ATtiny43U came out of reset
@@ -56,7 +63,7 @@ typedef enum
   SFE_AAA_REGISTER_RESET_REASON,
   SFE_AAA_REGISTER_TEMPERATURE,
   SFE_AAA_REGISTER_VBAT,
-  SFE_AAA_REGISTER_VCC_VOLTAGE,
+  SFE_AAA_REGISTER_1V1,
   SFE_AAA_REGISTER_ADC_REFERENCE,
   SFE_AAA_REGISTER_WDT_PRESCALER,
   SFE_AAA_REGISTER_POWERDOWN_DURATION,

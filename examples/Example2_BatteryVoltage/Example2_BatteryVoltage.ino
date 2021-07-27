@@ -1,5 +1,5 @@
 /*!
- * @file Example2_BatteryVoltage
+ * @file Example2_BatteryVoltage.ino
  * 
  * @mainpage SparkFun smôl Power Board AAA Arduino Library
  * 
@@ -22,6 +22,8 @@
  * MIT: please see LICENSE.md for the full license information
  * 
  */
+
+#include <Wire.h>
 
 #include <SparkFun_smol_Power_Board_AAA.h> //Click here to get the library:  http://librarymanager/All#SparkFun_smol_Power_Board_AAA
 
