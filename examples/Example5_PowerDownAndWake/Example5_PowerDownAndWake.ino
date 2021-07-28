@@ -1,11 +1,14 @@
 /*!
- * @file Example2_BatteryVoltage.ino
+ * @file Example3_PowerDown.ino
  * 
  * @mainpage SparkFun smôl Power Board AAA Arduino Library
  * 
  * @section intro_sec Examples
  * 
- * This example shows how to read the battery voltage from the smôl Power Board AAA.
+ * This example shows how to power-down the smôl Power Board AAA and check it wakes up correctly.
+ * Don't run this code on a smôl processor as the smôl power will be disabled during power-down.
+ * Instead, run it on a Qwiic-compatible board attached to the smôl header.
+ * Be aware that any I2C pull-ups will back-feed the smôl 3.3V rail.
  * 
  * Want to support open source hardware? Buy a board from SparkFun!
  * SparkX smôl Power Board AAA (SPX-18360): https://www.sparkfun.com/products/18360
@@ -46,31 +49,33 @@ void setup()
       ;
   }
 
-  Serial.println(F("The ATtiny43U on the smôl Power Board AAA can read the battery voltage via the ADC."));
-  Serial.println(F("Setting the ADC Voltage Reference to VCC allows the ADC to read voltages of up to 2 * VCC"));
-  Serial.println(F("thanks to the ATtiny's internal resistor divider circuit. However the reading may be noisy"));
-  Serial.println(F("if the on-board boost regulator is running. We can get a less noisy reading by selecting"));
-  Serial.println(F("the internal 1.1V reference instead, but then we are limited to a maximum battery voltage"));
-  Serial.println(F("of 2.2V. If you are using a single AA or AAA battery to power the board, the 1.1V reference"));
-  Serial.println(F("will give best results."));
-  Serial.println();
-
-  myPowerBoard.setADCVoltageReference(SFE_AAA_USE_ADC_REF_1V1); // Select the 1.1V internal voltage reference
-
-  float voltage = myPowerBoard.getBatteryVoltage();
-  Serial.print(F("With the 1.1V reference, the battery voltage reads as: "));
-  Serial.println(voltage);
-
-  if (voltage == -99.0)
-  {
-    Serial.println(F("A voltage of -99.0V indicates an error."));
-  }
-
-  Serial.println();
-  
   myPowerBoard.setADCVoltageReference(SFE_AAA_USE_ADC_REF_VCC); // Select VCC as the voltage reference
 
-  voltage = myPowerBoard.getBatteryVoltage();
+  Serial.println(F("To set the power-down duration, we need to do two things:"));
+  Serial.println(F(" Set the ATtiny43U's Watchdog Timer prescaler to set a useful interrupt rate"));
+  Serial.println(F(" Set the power-down duration in Watchdog Timer interrupts"));
+  Serial.println();
+  Serial.println(F("To power down for 10 seconds, we can:"));
+  Serial.println(F(" Set the prescaler to 256K cycles = 2 seconds"));
+  Serial.println(F(" Set the power-down duration to 5"));
+  Serial.println();
+
+  myPowerBoard.setWatchdogTimerPrescaler(SFE_AAA_WDT_PRESCALE_256K); // Set the WDT prescaler to 256K cycles = 2.0 seconds
+
+  myPowerBoard.setPowerdownDurationWDTInts(5); // Set the sleep durtion to 5 WDT interrupts
+}
+
+void loop()
+{
+  Serial.println();
+  Serial.println(F("Power down now..."));
+  Serial.println();
+  
+  myPowerBoard.powerDownNow();
+
+  delay(15000); // Wait 15 seconds before attempting to communicate with the smôl Power Board AAA
+  
+  float voltage = myPowerBoard.getBatteryVoltage();
   Serial.print(F("Using VCC as the voltage reference, the battery voltage reads as: "));
   Serial.println(voltage);
 
@@ -78,10 +83,4 @@ void setup()
   {
     Serial.println(F("A voltage of -99.0V indicates an error."));
   }
-
-}
-
-void loop()
-{
-  //Nothing to do here
 }
