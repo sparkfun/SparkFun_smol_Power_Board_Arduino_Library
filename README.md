@@ -1,12 +1,12 @@
-# SparkFun smôl Power Board AAA Arduino Library
+# SparkFun smôl Power Board Arduino Library
 
 [![SparkX smôl Power Board AAA (SPX-18360)]()](https://www.sparkfun.com/products/18360)
 
 [*SparkX smôl Power Board AAA (SPX-18360)*](https://www.sparkfun.com/products/18360)
 
-An Arduino library to enable communication with the smôl Power Board AAA.
+An Arduino library to enable communication with the smôl Power Boards: AAA and LiPo.
 
-This library can be installed through the Arduino Library Manager: please search for **SparkFun smol Power Board AAA**
+This library can be installed through the Arduino Library Manager: please search for **SparkFun smol Power Board**
 
 ## Repository Contents
 
@@ -19,6 +19,7 @@ This library can be installed through the Arduino Library Manager: please search
 ## Products That Use This Library
 
 - [SPX-18360](https://www.sparkfun.com/products/18360) - SparkX smôl Power Board AAA
+- [SPX-18359](https://www.sparkfun.com/products/18359) - SparkX smôl Power Board LiPo
 
 ## Documentation
 

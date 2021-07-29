@@ -1,21 +1,23 @@
 /*!
  * @file Example1_ReadTemperature.ino
  * 
- * @mainpage SparkFun smôl Power Board AAA Arduino Library
+ * @mainpage SparkFun smôl Power Board Arduino Library
  * 
  * @section intro_sec Examples
  * 
- * This example shows how to read the temperature from the ATtiny43U on the smôl Power Board AAA.
+ * This example shows how to read the firmware version and the temperature from the smôl Power Board.
  * 
  * Want to support open source hardware? Buy a board from SparkFun!
  * SparkX smôl Power Board AAA (SPX-18360): https://www.sparkfun.com/products/18360
+ * SparkX smôl Power Board LiPo (SPX-18359): https://www.sparkfun.com/products/18359
  * SparkX smôl ESP32 (SPX-18362): https://www.sparkfun.com/products/18362
  * 
  * @section author Author
  * 
  * This library was written by:
  * Paul Clark
- * July 23rd 2021
+ * SparkFun Electronics
+ * July 29th 2021
  * 
  * @section license License
  * 
@@ -25,16 +27,18 @@
 
 #include <Wire.h>
 
-#include <SparkFun_smol_Power_Board_AAA.h> //Click here to get the library:  http://librarymanager/All#SparkFun_smol_Power_Board_AAA
+#include <SparkFun_MAX1704x_Fuel_Gauge_Arduino_Library.h> // Click here to get the library: http://librarymanager/All#SparkFun_MAX1704x_Fuel_Gauge_Arduino_Library
+#include <SparkFun_smol_Power_Board.h> //Click here to get the library:  http://librarymanager/All#SparkFun_smol_Power_Board
 
-smolPowerAAA myPowerBoard;
+//smolPowerAAA myPowerBoard; // Uncomment this line if you are using the smôl Power Board AAA
+smolPowerLiPo myPowerBoard; // Uncomment this line if you are using the smôl Power Board LiPo
 
 void setup()
 {
   Serial.begin(115200);
   while (!Serial)
     ; // Wait for the user to open the Serial console
-  Serial.println(F("smôl Power Board AAA example"));
+  Serial.println(F("smôl Power Board example"));
   Serial.println();
 
   Wire.begin();

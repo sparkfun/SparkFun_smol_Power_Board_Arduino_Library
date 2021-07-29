@@ -1,11 +1,11 @@
 /*!
  * @file Example2_BatteryVoltage.ino
  * 
- * @mainpage SparkFun smôl Power Board AAA Arduino Library
+ * @mainpage SparkFun smôl Power Board Arduino Library
  * 
  * @section intro_sec Examples
  * 
- * This example shows how to read the battery voltage from the smôl Power Board AAA.
+ * This example shows how to read the battery voltage from the smôl Power Board.
  * 
  * Want to support open source hardware? Buy a board from SparkFun!
  * SparkX smôl Power Board AAA (SPX-18360): https://www.sparkfun.com/products/18360
@@ -15,6 +15,7 @@
  * 
  * This library was written by:
  * Paul Clark
+ * SparkFun Electronics
  * July 23rd 2021
  * 
  * @section license License
@@ -25,16 +26,18 @@
 
 #include <Wire.h>
 
-#include <SparkFun_smol_Power_Board_AAA.h> //Click here to get the library:  http://librarymanager/All#SparkFun_smol_Power_Board_AAA
+#include <SparkFun_MAX1704x_Fuel_Gauge_Arduino_Library.h> // Click here to get the library: http://librarymanager/All#SparkFun_MAX1704x_Fuel_Gauge_Arduino_Library
+#include <SparkFun_smol_Power_Board.h> //Click here to get the library:  http://librarymanager/All#SparkFun_smol_Power_Board
 
-smolPowerAAA myPowerBoard;
+//smolPowerAAA myPowerBoard; // Uncomment this line if you are using the smôl Power Board AAA
+smolPowerLiPo myPowerBoard; // Uncomment this line if you are using the smôl Power Board LiPo
 
 void setup()
 {
   Serial.begin(115200);
   while (!Serial)
     ; // Wait for the user to open the Serial console
-  Serial.println(F("smôl Power Board AAA example"));
+  Serial.println(F("smôl Power Board example"));
   Serial.println();
 
   Wire.begin();
@@ -52,13 +55,19 @@ void setup()
   Serial.println(F("if the on-board boost regulator is running. We can get a less noisy reading by selecting"));
   Serial.println(F("the internal 1.1V reference instead, but then we are limited to a maximum battery voltage"));
   Serial.println(F("of 2.2V. If you are using a single AA or AAA battery to power the board, the 1.1V reference"));
-  Serial.println(F("will give best results."));
+  Serial.println(F("will give best results. For 2 * AA/AAA you will need to use VCC as the reference."));
   Serial.println();
 
-  myPowerBoard.setADCVoltageReference(SFE_AAA_USE_ADC_REF_1V1); // Select the 1.1V internal voltage reference
+  Serial.println(F("On the smôl Power Board LiPo, the battery voltage is read from the MAX17048 fuel gauge."));
+  Serial.println(F("setADCVoltageReference has no effect on the Power Board LiPo."));
+  Serial.println();
+
+  Serial.println(F("Selecting the 1.1V reference."));
+
+  myPowerBoard.setADCVoltageReference(SFE_SMOL_POWER_USE_ADC_REF_1V1); // Select the 1.1V internal voltage reference
 
   float voltage = myPowerBoard.getBatteryVoltage();
-  Serial.print(F("With the 1.1V reference, the battery voltage reads as: "));
+  Serial.print(F("The battery voltage reads as: "));
   Serial.println(voltage);
 
   if (voltage == -99.0)
@@ -68,10 +77,12 @@ void setup()
 
   Serial.println();
   
-  myPowerBoard.setADCVoltageReference(SFE_AAA_USE_ADC_REF_VCC); // Select VCC as the voltage reference
+  Serial.println(F("Selecting VCC as the reference."));
+
+  myPowerBoard.setADCVoltageReference(SFE_SMOL_POWER_USE_ADC_REF_VCC); // Select VCC as the voltage reference
 
   voltage = myPowerBoard.getBatteryVoltage();
-  Serial.print(F("Using VCC as the voltage reference, the battery voltage reads as: "));
+  Serial.print(F("The battery voltage reads as: "));
   Serial.println(voltage);
 
   if (voltage == -99.0)

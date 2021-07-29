@@ -1,20 +1,22 @@
 /*!
- * @file SparkFun_smol_Power_Board_AAA.cpp
+ * @file SparkFun_smol_Power_Board.cpp
  * 
- * @mainpage SparkFun smôl Power Board AAA Arduino Library
+ * @mainpage SparkFun smôl Power Board Arduino Library
  * 
  * @section intro_sec Introduction
  * 
- * This library facilitates communication with the smôl Power Board AAA.
+ * This library facilitates communication with the smôl Power Board.
  * 
  * Want to support open source hardware? Buy a board from SparkFun!
  * <br>SparkX smôl Power Board AAA (SPX-18360): https://www.sparkfun.com/products/18360
+ * <br>SparkX smôl Power Board LiPo (SPX-18359): https://www.sparkfun.com/products/18359
  * <br>SparkX smôl ESP32 (SPX-18362): https://www.sparkfun.com/products/18362
  * 
  * @section author Author
  * 
  * This library was written by:
  * Paul Clark
+ * SparkFun Electronics
  * July 23rd 2021
  * 
  * @section license License
@@ -23,14 +25,14 @@
  * 
  */
 
-#include "SparkFun_smol_Power_Board_AAA.h"
+#include "SparkFun_smol_Power_Board.h"
 
 /**************************************************************************/
 /*!
-    @brief  Begin communication with the SparkFun smôl Power Board AAA
+    @brief  Begin communication with the SparkFun smôl Power Board
     @param  deviceAddress
             The I2C address of the Power Board.
-            Default is SFE_AAA_DEFAULT_I2C_ADDRESS 0x50.
+            Default is SFE_POWER_BOARD_DEFAULT_I2C_ADDRESS 0x50.
             Can be changed with setI2CAddress.
     @param  wirePort
             The TwoWire (I2C) port used to communicate with the Power Board.
@@ -40,7 +42,11 @@
 /**************************************************************************/
 bool smolPowerAAA::begin(byte deviceAddress, TwoWire &wirePort)
 {
-  return (smolPowerAAA_io.begin(deviceAddress, wirePort));
+  return (smolPowerBoard_io.begin(deviceAddress, wirePort));
+}
+bool smolPowerLiPo::begin(byte deviceAddress, TwoWire &wirePort)
+{
+  return (smolPowerBoard_io.begin(deviceAddress, wirePort) && powerBoardFuelGauge.begin(wirePort));
 }
 
 /**************************************************************************/
@@ -50,9 +56,9 @@ bool smolPowerAAA::begin(byte deviceAddress, TwoWire &wirePort)
     @return True if communication with the Power Board was successful, otherwise false.
 */
 /**************************************************************************/
-bool smolPowerAAA::isConnected()
+bool sfeSmolPowerBoard::isConnected()
 {
-  return (smolPowerAAA_io.isConnected());
+  return (smolPowerBoard_io.isConnected());
 }
 
 /**************************************************************************/
@@ -65,16 +71,16 @@ bool smolPowerAAA::isConnected()
     @return True if communication with the Power Board was successful, otherwise false.
 */
 /**************************************************************************/
-bool smolPowerAAA::setI2CAddress(byte address)
+bool sfeSmolPowerBoard::setI2CAddress(byte address)
 {
-  /** To change the address, we need to write two bytes to SFE_AAA_REGISTER_I2C_ADDRESS.
+  /** To change the address, we need to write two bytes to SFE_POWER_BOARD_REGISTER_I2C_ADDRESS.
       The first is the new address. The second is a one byte CRC of the address. */
   byte bytesToSend[2];
   bytesToSend[0] = address;
   bytesToSend[1] = computeCRC8(bytesToSend, 1);
-  bool result = smolPowerAAA_io.writeMultipleBytes(SFE_AAA_REGISTER_I2C_ADDRESS, bytesToSend, 2);
+  bool result = smolPowerBoard_io.writeMultipleBytes(SFE_SMOL_POWER_REGISTER_I2C_ADDRESS, bytesToSend, 2);
   if (result)
-    delay(SFE_AAA_EEPROM_UPDATE_DELAY); // Wait for the eeprom to be updated
+    delay(SFE_SMOL_POWER_EEPROM_UPDATE_DELAY); // Wait for the eeprom to be updated
   return (result);
 }
 
@@ -86,10 +92,10 @@ bool smolPowerAAA::setI2CAddress(byte address)
     @return The Power Board's I2C address. Returns zero if an error occurred.
 */
 /**************************************************************************/
-byte smolPowerAAA::getI2CAddress()
+byte sfeSmolPowerBoard::getI2CAddress()
 {
   byte address;
-  bool result = smolPowerAAA_io.readSingleByte(SFE_AAA_REGISTER_I2C_ADDRESS, &address);
+  bool result = smolPowerBoard_io.readSingleByte(SFE_SMOL_POWER_REGISTER_I2C_ADDRESS, &address);
   if (!result)
     address = 0;
   return (address);
@@ -97,47 +103,47 @@ byte smolPowerAAA::getI2CAddress()
 
 /**************************************************************************/
 /*!
-    @brief  Read the reason for the ATtiny43U's most recent reset.
+    @brief  Read the reason for the ATtiny's most recent reset.
     @return The reset reason: the logical OR of:
-            <br>SFE_AAA_RESET_REASON_PORF
-            <br>SFE_AAA_RESET_REASON_EXTRF
-            <br>SFE_AAA_RESET_REASON_BORF
-            <br>SFE_AAA_RESET_REASON_WDRF
-            <br>SFE_AAA_EEPROM_CORRUPT_ON_RESET
-            <br>SFE_AAA_COMM_ERROR
+            <br>SFE_SMOL_POWER_RESET_REASON_PORF
+            <br>SFE_SMOL_POWER_RESET_REASON_EXTRF
+            <br>SFE_SMOL_POWER_RESET_REASON_BORF
+            <br>SFE_SMOL_POWER_RESET_REASON_WDRF
+            <br>SFE_SMOL_POWER_EEPROM_CORRUPT_ON_RESET
+            <br>SFE_SMOL_POWER_COMM_ERROR
 */
 /**************************************************************************/
-byte smolPowerAAA::getResetReason()
+byte sfeSmolPowerBoard::getResetReason()
 {
   /** The reset reason is updated as soon as the ATtiny43U starts.
       The four MCU STatus Register Flags are read.
       If the ATtiny43U found that its eeprom was corrupt when the code started,
-      SFE_AAA_EEPROM_CORRUPT_ON_RESET will be set indicating that the eeprom
+      SFE_SMOL_POWER_EEPROM_CORRUPT_ON_RESET will be set indicating that the eeprom
       settings have been reset to the default values. */
   byte reason;
-  bool result = smolPowerAAA_io.readSingleByte(SFE_AAA_REGISTER_RESET_REASON, &reason);
+  bool result = smolPowerBoard_io.readSingleByte(SFE_SMOL_POWER_REGISTER_RESET_REASON, &reason);
   if (!result)
-    reason |= SFE_AAA_COMM_ERROR;
+    reason |= SFE_SMOL_POWER_COMM_ERROR;
   return (reason);
 }
 
 /**************************************************************************/
 /*!
-    @brief  Read the ATtiny43U's internal temperature.
+    @brief  Read the ATtiny's internal temperature.
             <br>TO DO: Add temperature calibration / correction functionality.
     @return The temperature in Degrees Centigrade / Celcius or -273.15 if an error occured.
 */
 /**************************************************************************/
-float smolPowerAAA::getTemperature()
+float sfeSmolPowerBoard::getTemperature()
 {
   /** To read the approximate temperature, we need to read two bytes (uint16_t, little endian)
-      from SFE_AAA_REGISTER_TEMPERATURE. These will be the raw ADC reading which we
+      from SFE_SMOL_POWER_REGISTER_TEMPERATURE. These will be the raw ADC reading which we
       need to convert to Degrees C. The ATtiny43U will use the 1.1V
       internal reference for the conversion. There is no need to select it here.
       The sensitivity is approximately 1 LSB/°C with 25°C reading as 300 ADU. */
   byte theBytes[2];
   float result = -273.15; // Return -273.15 if readMultipleBytes fails
-  if (smolPowerAAA_io.readMultipleBytes(SFE_AAA_REGISTER_TEMPERATURE, theBytes, 2, SFE_AAA_ADC_READ_DELAY))
+  if (smolPowerBoard_io.readMultipleBytes(SFE_SMOL_POWER_REGISTER_TEMPERATURE, theBytes, 2, SFE_SMOL_POWER_ADC_READ_DELAY))
   {
     uint16_t rawTemp = (((uint16_t)theBytes[1]) << 8) | theBytes[0]; // Little endian
     result = 25.0 + ((float)rawTemp) - 300.0; // Convert to °C
@@ -153,20 +159,20 @@ float smolPowerAAA::getTemperature()
 /**************************************************************************/
 float smolPowerAAA::getBatteryVoltage()
 {
-  /** This function reads two bytes (uint16_t, little endian) from SFE_AAA_REGISTER_VBAT.
+  /** This function reads two bytes (uint16_t, little endian) from SFE_SMOL_POWER_REGISTER_VBAT.
       This will be the raw 10-bit ADC reading. We need to manually convert this to
       voltage using the selected voltage reference. The ADC has a built-in divide-by-2
       circuit, so we can measure up to 2*VCC or 2.2V depending on the reference. */
   float result = -99.0; // Return -99.0V if something bad happened.
-  sfe_power_board_aaa_ADC_ref_e ref = getADCVoltageReference(); // Read which voltage reference is being used
-  if (ref == SFE_AAA_USE_ADC_REF_UNDEFINED)
+  sfe_power_board_ADC_ref_e ref = getADCVoltageReference(); // Read which voltage reference is being used
+  if (ref == SFE_SMOL_POWER_USE_ADC_REF_UNDEFINED)
     return (result); // Return now if getBatteryVoltageReference failed
   byte theBytes[2];
-  if (smolPowerAAA_io.readMultipleBytes(SFE_AAA_REGISTER_VBAT, theBytes, 2, SFE_AAA_ADC_READ_DELAY))
+  if (smolPowerBoard_io.readMultipleBytes(SFE_SMOL_POWER_REGISTER_VBAT, theBytes, 2, SFE_SMOL_POWER_ADC_READ_DELAY))
   {
     uint16_t rawVolts = (((uint16_t)theBytes[1]) << 8) | theBytes[0]; // Little endian
     result = ((float)rawVolts) / 1023.0; // Convert 10-bit ADC result to the fraction of full range
-    if (ref == SFE_AAA_USE_ADC_REF_VCC) // Are we using VCC as the reference?
+    if (ref == SFE_SMOL_POWER_USE_ADC_REF_VCC) // Are we using VCC as the reference?
     {
       float vcc = measureVCC(); // We need to measure VCC so we can scale the ADC reading correctly
       if (vcc > 0.0)
@@ -183,6 +189,11 @@ float smolPowerAAA::getBatteryVoltage()
   }
   return (result);
 }
+float smolPowerLiPo::getBatteryVoltage()
+{
+  /** This function reads the battery voltage from the MAX_17048 fuel gauge. */
+  return (powerBoardFuelGauge.getVoltage());
+}
 
 /**************************************************************************/
 /*!
@@ -190,16 +201,16 @@ float smolPowerAAA::getBatteryVoltage()
     @return The battery voltage in Volts or -99.0 if an error occurred.
 */
 /**************************************************************************/
-float smolPowerAAA::measureVCC()
+float sfeSmolPowerBoard::measureVCC()
 {
   /** By reading the 1.1V internal reference we can work out what VCC is.
-      We need to read two bytes (uint16_t, little endian) from SFE_AAA_REGISTER_VBAT.
+      We need to read two bytes (uint16_t, little endian) from SFE_SMOL_POWER_REGISTER_VBAT.
       This will be the raw 10-bit ADC reading. We need to manually convert this to
       voltage. The ATtiny43U will automatically select VCC as the reference. There is
       no need to select it here. */
   float result = -99.0; // Return -99.0V if something bad happened.
   byte theBytes[2];
-  if (smolPowerAAA_io.readMultipleBytes(SFE_AAA_REGISTER_1V1, theBytes, 2, SFE_AAA_ADC_READ_DELAY))
+  if (smolPowerBoard_io.readMultipleBytes(SFE_SMOL_POWER_REGISTER_1V1, theBytes, 2, SFE_SMOL_POWER_ADC_READ_DELAY))
   {
     uint16_t rawVolts = (((uint16_t)theBytes[1]) << 8) | theBytes[0]; // Little endian
     float fractionFullRange = ((float)rawVolts) / 1023.0; // Convert 10-bit ADC result to the fraction of full range
@@ -216,40 +227,40 @@ float smolPowerAAA::measureVCC()
 /*!
     @brief  Set the ATtiny43U's ADC voltage reference to VCC or the internal 1.1V reference.
     @param  ref
-            The reference: SFE_AAA_USE_ADC_REF_VCC or SFE_AAA_USE_ADC_REF_1V1
+            The reference: SFE_SMOL_POWER_USE_ADC_REF_VCC or SFE_SMOL_POWER_USE_ADC_REF_1V1
     @return True if the reference is set successfuly, false if not.
 */
 /**************************************************************************/
-bool smolPowerAAA::setADCVoltageReference(sfe_power_board_aaa_ADC_ref_e ref)
+bool sfeSmolPowerBoard::setADCVoltageReference(sfe_power_board_ADC_ref_e ref)
 {
-  /** To change the voltage reference, we need to write two bytes to SFE_AAA_REGISTER_ADC_REFERENCE
+  /** To change the voltage reference, we need to write two bytes to SFE_SMOL_POWER_REGISTER_ADC_REFERENCE
       The first is the new address. The second is a one byte CRC of the address. */
   byte bytesToSend[2];
   bytesToSend[0] = (byte)ref;
   bytesToSend[1] = computeCRC8(bytesToSend, 1);
-  smolPowerAAA_io.writeMultipleBytes(SFE_AAA_REGISTER_ADC_REFERENCE, bytesToSend, 2);
+  smolPowerBoard_io.writeMultipleBytes(SFE_SMOL_POWER_REGISTER_ADC_REFERENCE, bytesToSend, 2);
   return (getADCVoltageReference() == ref); //Check the reference was modified correctly by reading it back again
 }
 
 /**************************************************************************/
 /*!
     @brief  Get the ATtiny43U's ADC voltage reference: VCC or the internal 1.1V reference.
-    @return SFE_AAA_USE_ADC_REF_VCC or SFE_AAA_USE_ADC_REF_1V1 if the reference was read successfuly,
-            SFE_AAA_USE_ADC_REF_UNDEFINED if not.
+    @return SFE_SMOL_POWER_USE_ADC_REF_VCC or SFE_SMOL_POWER_USE_ADC_REF_1V1 if the reference was read successfuly,
+            SFE_SMOL_POWER_USE_ADC_REF_UNDEFINED if not.
 */
 /**************************************************************************/
-sfe_power_board_aaa_ADC_ref_e smolPowerAAA::getADCVoltageReference()
+sfe_power_board_ADC_ref_e sfeSmolPowerBoard::getADCVoltageReference()
 {
   byte buffer;
-  bool result = smolPowerAAA_io.readSingleByte(SFE_AAA_REGISTER_ADC_REFERENCE, &buffer);
+  bool result = smolPowerBoard_io.readSingleByte(SFE_SMOL_POWER_REGISTER_ADC_REFERENCE, &buffer);
   if (!result)
-    return (SFE_AAA_USE_ADC_REF_UNDEFINED);
-  if ((sfe_power_board_aaa_ADC_ref_e)buffer == SFE_AAA_USE_ADC_REF_VCC)
-    return (SFE_AAA_USE_ADC_REF_VCC);
-  else if ((sfe_power_board_aaa_ADC_ref_e)buffer == SFE_AAA_USE_ADC_REF_1V1)
-    return (SFE_AAA_USE_ADC_REF_1V1);
+    return (SFE_SMOL_POWER_USE_ADC_REF_UNDEFINED);
+  if ((sfe_power_board_ADC_ref_e)buffer == SFE_SMOL_POWER_USE_ADC_REF_VCC)
+    return (SFE_SMOL_POWER_USE_ADC_REF_VCC);
+  else if ((sfe_power_board_ADC_ref_e)buffer == SFE_SMOL_POWER_USE_ADC_REF_1V1)
+    return (SFE_SMOL_POWER_USE_ADC_REF_1V1);
   else
-    return (SFE_AAA_USE_ADC_REF_UNDEFINED);
+    return (SFE_SMOL_POWER_USE_ADC_REF_UNDEFINED);
 }
 
 /**************************************************************************/
@@ -260,34 +271,34 @@ sfe_power_board_aaa_ADC_ref_e smolPowerAAA::getADCVoltageReference()
     @return True if the prescaler is set successfuly, false if not.
 */
 /**************************************************************************/
-bool smolPowerAAA::setWatchdogTimerPrescaler(sfe_power_board_aaa_WDT_prescale_e prescaler)
+bool sfeSmolPowerBoard::setWatchdogTimerPrescaler(sfe_power_board_WDT_prescale_e prescaler)
 {
-  /** To change the prescaler, we need to write two bytes to SFE_AAA_REGISTER_WDT_PRESCALER
+  /** To change the prescaler, we need to write two bytes to SFE_SMOL_POWER_REGISTER_WDT_PRESCALER
       The first is the new prescaler. The second is a one byte CRC of the address. */
   byte bytesToSend[2];
   bytesToSend[0] = (byte)prescaler;
   bytesToSend[1] = computeCRC8(bytesToSend, 1);
-  smolPowerAAA_io.writeMultipleBytes(SFE_AAA_REGISTER_WDT_PRESCALER, bytesToSend, 2);
-  delay(SFE_AAA_EEPROM_UPDATE_DELAY);
+  smolPowerBoard_io.writeMultipleBytes(SFE_SMOL_POWER_REGISTER_WDT_PRESCALER, bytesToSend, 2);
+  delay(SFE_SMOL_POWER_EEPROM_UPDATE_DELAY);
   return (getWatchdogTimerPrescaler() == prescaler); //Check the prescaler was modified correctly by reading it back again
 }
 
 /**************************************************************************/
 /*!
     @brief  Get the ATtiny43U's Watchdog Timer prescaler setting.
-    @return The appropriate SFE_AAA_WDT_PRESCALE_ or SFE_AAA_WDT_PRESCALE_UNDEFINED if communication failed.
+    @return The appropriate SFE_SMOL_POWER_WDT_PRESCALE_ or SFE_SMOL_POWER_WDT_PRESCALE_UNDEFINED if communication failed.
 */
 /**************************************************************************/
-sfe_power_board_aaa_WDT_prescale_e smolPowerAAA::getWatchdogTimerPrescaler()
+sfe_power_board_WDT_prescale_e sfeSmolPowerBoard::getWatchdogTimerPrescaler()
 {
   byte buffer;
-  bool result = smolPowerAAA_io.readSingleByte(SFE_AAA_REGISTER_WDT_PRESCALER, &buffer);
+  bool result = smolPowerBoard_io.readSingleByte(SFE_SMOL_POWER_REGISTER_WDT_PRESCALER, &buffer);
   if (!result)
-    return (SFE_AAA_WDT_PRESCALE_UNDEFINED);
-  if ((sfe_power_board_aaa_WDT_prescale_e)buffer <= SFE_AAA_WDT_PRESCALE_1024K)
-    return ((sfe_power_board_aaa_WDT_prescale_e)buffer);
+    return (SFE_SMOL_POWER_WDT_TIMEOUT_UNDEFINED);
+  if ((sfe_power_board_WDT_prescale_e)buffer <= SFE_SMOL_POWER_WDT_TIMEOUT_8s)
+    return ((sfe_power_board_WDT_prescale_e)buffer);
   else
-    return (SFE_AAA_WDT_PRESCALE_UNDEFINED);
+    return (SFE_SMOL_POWER_WDT_TIMEOUT_UNDEFINED);
 }
 
 /**************************************************************************/
@@ -298,16 +309,16 @@ sfe_power_board_aaa_WDT_prescale_e smolPowerAAA::getWatchdogTimerPrescaler()
     @return True if the duration is set successfuly, false if not.
 */
 /**************************************************************************/
-bool smolPowerAAA::setPowerdownDurationWDTInts(uint16_t duration)
+bool sfeSmolPowerBoard::setPowerdownDurationWDTInts(uint16_t duration)
 {
-  /** To change the power-down duration, we need to write three bytes to the SFE_AAA_REGISTER_POWERDOWN_DURATION register.
+  /** To change the power-down duration, we need to write three bytes to the SFE_SMOL_POWER_REGISTER_POWERDOWN_DURATION register.
       The first two are the duration in uint16_t little endian format. The third is a one byte CRC of the duration. */
   byte bytesToSend[3];
   bytesToSend[0] = (byte)(duration & 0xFF); // Little endian
   bytesToSend[1] = (byte)(duration >> 8);
   bytesToSend[2] = computeCRC8(bytesToSend, 2);
-  smolPowerAAA_io.writeMultipleBytes(SFE_AAA_REGISTER_POWERDOWN_DURATION, bytesToSend, 3);
-  delay(SFE_AAA_EEPROM_UPDATE_DELAY);
+  smolPowerBoard_io.writeMultipleBytes(SFE_SMOL_POWER_REGISTER_POWERDOWN_DURATION, bytesToSend, 3);
+  delay(SFE_SMOL_POWER_EEPROM_UPDATE_DELAY);
   uint16_t readDuration;
   bool result = getPowerDownDurationWDTInts(&readDuration); //Check the duration was modified correctly by reading it back again
   return (result && (readDuration == duration));
@@ -321,10 +332,10 @@ bool smolPowerAAA::setPowerdownDurationWDTInts(uint16_t duration)
     @return True if the duration was read successfully, false if not.
 */
 /**************************************************************************/
-bool smolPowerAAA::getPowerDownDurationWDTInts(uint16_t *duration)
+bool sfeSmolPowerBoard::getPowerDownDurationWDTInts(uint16_t *duration)
 {
   byte buffer[2];
-  bool result = smolPowerAAA_io.readMultipleBytes(SFE_AAA_REGISTER_POWERDOWN_DURATION, buffer, 2);
+  bool result = smolPowerBoard_io.readMultipleBytes(SFE_SMOL_POWER_REGISTER_POWERDOWN_DURATION, buffer, 2);
   *duration = (((uint16_t)buffer[1]) << 8) | (uint16_t)buffer[0]; // Little endian
   return (result);
 }
@@ -333,13 +344,13 @@ bool smolPowerAAA::getPowerDownDurationWDTInts(uint16_t *duration)
 /*!
     @brief  Power down the system now. The smôl bus power will be disabled.
             The ATtiny43U will wake up and turn the power back on after
-            SFE_AAA_REGISTER_POWERDOWN_DURATION WDT interrupts.
+            SFE_SMOL_POWER_REGISTER_POWERDOWN_DURATION WDT interrupts.
     @return True if communication with the ATtiny43U was successful, false if not.
 */
 /**************************************************************************/
-bool smolPowerAAA::powerDownNow()
+bool sfeSmolPowerBoard::powerDownNow()
 {
-  /** To power-down, we need to write six bytes to the SFE_AAA_REGISTER_POWERDOWN_NOW register.
+  /** To power-down, we need to write six bytes to the SFE_SMOL_POWER_REGISTER_POWERDOWN_NOW register.
       The first five are the ASCII characters SLEEP. The sixth is a one byte CRC of the characters. */
   byte bytesToSend[6];
   bytesToSend[0] = 'S';
@@ -348,7 +359,7 @@ bool smolPowerAAA::powerDownNow()
   bytesToSend[3] = 'E';
   bytesToSend[4] = 'P';
   bytesToSend[5] = computeCRC8(bytesToSend, 5);
-  return (smolPowerAAA_io.writeMultipleBytes(SFE_AAA_REGISTER_POWERDOWN_NOW, bytesToSend, 6));
+  return (smolPowerBoard_io.writeMultipleBytes(SFE_SMOL_POWER_REGISTER_POWERDOWN_NOW, bytesToSend, 6));
 }
 
 /**************************************************************************/
@@ -359,10 +370,10 @@ bool smolPowerAAA::powerDownNow()
             E.g. 0x10 is: v1.0, Major Version 1, Minor Version 0.
 */
 /**************************************************************************/
-byte smolPowerAAA::getFirmwareVersion()
+byte sfeSmolPowerBoard::getFirmwareVersion()
 {
   byte version;
-  bool result = smolPowerAAA_io.readSingleByte(SFE_AAA_REGISTER_FIRMWARE_VERSION, &version);
+  bool result = smolPowerBoard_io.readSingleByte(SFE_SMOL_POWER_REGISTER_FIRMWARE_VERSION, &version);
   if (!result)
     version = 0;
   return (version);
@@ -381,7 +392,7 @@ byte smolPowerAAA::getFirmwareVersion()
     @return The CRC
 */
 /**************************************************************************/
-byte smolPowerAAA::computeCRC8(byte data[], byte len)
+byte sfeSmolPowerBoard::computeCRC8(byte data[], byte len)
 {
   byte crc = 0xFF; //Init with 0xFF
 
