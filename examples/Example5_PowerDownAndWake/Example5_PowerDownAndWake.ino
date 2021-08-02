@@ -33,8 +33,8 @@
 #include <SparkFun_MAX1704x_Fuel_Gauge_Arduino_Library.h> // Click here to get the library: http://librarymanager/All#SparkFun_MAX1704x_Fuel_Gauge_Arduino_Library
 #include <SparkFun_smol_Power_Board.h> //Click here to get the library:  http://librarymanager/All#SparkFun_smol_Power_Board
 
-//smolPowerAAA myPowerBoard; // Uncomment this line if you are using the smôl Power Board AAA
-smolPowerLiPo myPowerBoard; // Uncomment this line if you are using the smôl Power Board LiPo
+smolPowerAAA myPowerBoard; // Uncomment this line if you are using the smôl Power Board AAA
+//smolPowerLiPo myPowerBoard; // Uncomment this line if you are using the smôl Power Board LiPo
 
 void setup()
 {
