@@ -43,17 +43,17 @@
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
 /** getResetReason will return these bits */
-#define SFE_SMOL_POWER_RESET_REASON_PORF_BIT       0                                           ///< Bit position of the Power-on Reset Flag
+#define SFE_SMOL_POWER_RESET_REASON_PORF_BIT       0                                                  ///< Bit position of the Power-on Reset Flag
 #define SFE_SMOL_POWER_RESET_REASON_PORF           (1 << SFE_SMOL_POWER_RESET_REASON_PORF_BIT)        ///< Flag to indicate if the MCUSR PORF Flag was set when the ATtiny43U came out of reset
-#define SFE_SMOL_POWER_RESET_REASON_EXTRF_BIT      1                                           ///< Bit position of the External Reset Flag
+#define SFE_SMOL_POWER_RESET_REASON_EXTRF_BIT      1                                                  ///< Bit position of the External Reset Flag
 #define SFE_SMOL_POWER_RESET_REASON_EXTRF          (1 << SFE_SMOL_POWER_RESET_REASON_EXTRF_BIT)       ///< Flag to indicate if the MCUSR EXTRF Flag was set when the ATtiny43U came out of reset
-#define SFE_SMOL_POWER_RESET_REASON_BORF_BIT       2                                           ///< Bit position of the Brown-out Reset Flag
+#define SFE_SMOL_POWER_RESET_REASON_BORF_BIT       2                                                  ///< Bit position of the Brown-out Reset Flag
 #define SFE_SMOL_POWER_RESET_REASON_BORF           (1 << SFE_SMOL_POWER_RESET_REASON_BORF_BIT)        ///< Flag to indicate if the MCUSR BORF Flag was set when the ATtiny43U came out of reset
-#define SFE_SMOL_POWER_RESET_REASON_WDRF_BIT       3                                           ///< Bit position of the Watchdog Reset Flag
+#define SFE_SMOL_POWER_RESET_REASON_WDRF_BIT       3                                                  ///< Bit position of the Watchdog Reset Flag
 #define SFE_SMOL_POWER_RESET_REASON_WDRF           (1 << SFE_SMOL_POWER_RESET_REASON_WDRF_BIT)        ///< Flag to indicate if the MCUSR WDRF Flag was set when the ATtiny43U came out of reset
-#define SFE_SMOL_POWER_EEPROM_CORRUPT_ON_RESET_BIT 4                                           ///< Bit position of the eeprom memory corrupt on reset flag
+#define SFE_SMOL_POWER_EEPROM_CORRUPT_ON_RESET_BIT 4                                                  ///< Bit position of the eeprom memory corrupt on reset flag
 #define SFE_SMOL_POWER_EEPROM_CORRUPT_ON_RESET     (1 << SFE_SMOL_POWER_EEPROM_CORRUPT_ON_RESET_BIT)  ///< Flag to indicate if the ATtiny43U's eeprom memory was corrupt on reset and has been overwritten with the default settings
-#define SFE_SMOL_POWER_COMM_ERROR_BIT              7                                           ///< Bit position of the communication error flag
+#define SFE_SMOL_POWER_COMM_ERROR_BIT              7                                                  ///< Bit position of the communication error flag
 #define SFE_SMOL_POWER_COMM_ERROR                  (1 << SFE_SMOL_POWER_COMM_ERROR_BIT)               ///< Flag to indicate if a communication error occurred while fetching the reset reason
 
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
