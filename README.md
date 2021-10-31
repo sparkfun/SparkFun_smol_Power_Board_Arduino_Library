@@ -2,7 +2,7 @@
 
 [![SparkX smôl Power Board LiPo (SPX-18622)](https://cdn.sparkfun.com//assets/parts/1/8/1/2/2/18622-smo__l_Power_Board_LiPo-01.jpg)](https://www.sparkfun.com/products/18622)
 
-[*SparkX smôl Power Board AAA (SPX-18622)*](https://www.sparkfun.com/products/18622)
+[*SparkX smôl Power Board LiPo (SPX-18622)*](https://www.sparkfun.com/products/18622)
 
 An Arduino library to enable communication with the smôl Power Boards: AAA and LiPo.
 
