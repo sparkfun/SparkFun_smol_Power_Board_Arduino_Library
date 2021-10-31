@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['sfe_5fpower_5fboard_5faaa_5fadc_5fref_5fe_70',['sfe_power_board_aaa_ADC_ref_e',['../_spark_fun__smol___power___board___a_a_a___constants_8h.html#a897ee17e24594f8ef65f904e2a254b1a',1,'SparkFun_smol_Power_Board_AAA_Constants.h']]],
-  ['sfe_5fpower_5fboard_5faaa_5fregisters_5fe_71',['sfe_power_board_aaa_registers_e',['../_spark_fun__smol___power___board___a_a_a___constants_8h.html#ac8897faf1bddee32c8fc99c82b9551b8',1,'SparkFun_smol_Power_Board_AAA_Constants.h']]],
-  ['sfe_5fpower_5fboard_5faaa_5fwdt_5fprescale_5fe_72',['sfe_power_board_aaa_WDT_prescale_e',['../_spark_fun__smol___power___board___a_a_a___constants_8h.html#a3cb45f7f7c5901028ee402f0263f6ee6',1,'SparkFun_smol_Power_Board_AAA_Constants.h']]]
+  ['sfe_5fpower_5fboard_5fadc_5fref_5fe_77',['sfe_power_board_ADC_ref_e',['../_spark_fun__smol___power___board___constants_8h.html#aca168e79eac2e73ba1e7dff35fd006a1',1,'SparkFun_smol_Power_Board_Constants.h']]],
+  ['sfe_5fpower_5fboard_5fregisters_5fe_78',['sfe_power_board_registers_e',['../_spark_fun__smol___power___board___constants_8h.html#a70016d03037f4ed6cb6d319e5c578ed7',1,'SparkFun_smol_Power_Board_Constants.h']]],
+  ['sfe_5fpower_5fboard_5fwdt_5fprescale_5fe_79',['sfe_power_board_WDT_prescale_e',['../_spark_fun__smol___power___board___constants_8h.html#a38024563cdc5ed0b2cf6b49b0d4b5bc5',1,'SparkFun_smol_Power_Board_Constants.h']]]
 ];

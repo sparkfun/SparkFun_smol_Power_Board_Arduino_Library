@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['powerdownnow_59',['powerDownNow',['../classsmol_power_a_a_a.html#a37f460f76a97cf8452bd7db793598464',1,'smolPowerAAA']]]
+  ['measurevcc_64',['measureVCC',['../classsfe_smol_power_board.html#a53f944185c6a73dd98cbfa8003434d60',1,'sfeSmolPowerBoard']]]
 ];

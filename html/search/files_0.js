@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['sparkfun_5fsmol_5fpower_5fboard_5faaa_2eh_45',['SparkFun_smol_Power_Board_AAA.h',['../_spark_fun__smol___power___board___a_a_a_8h.html',1,'']]],
-  ['sparkfun_5fsmol_5fpower_5fboard_5faaa_5fconstants_2eh_46',['SparkFun_smol_Power_Board_AAA_Constants.h',['../_spark_fun__smol___power___board___a_a_a___constants_8h.html',1,'']]],
-  ['sparkfun_5fsmol_5fpower_5fboard_5faaa_5fio_2eh_47',['SparkFun_smol_Power_Board_AAA_IO.h',['../_spark_fun__smol___power___board___a_a_a___i_o_8h.html',1,'']]]
+  ['sparkfun_5fsmol_5fpower_5fboard_2eh_50',['SparkFun_smol_Power_Board.h',['../_spark_fun__smol___power___board_8h.html',1,'']]],
+  ['sparkfun_5fsmol_5fpower_5fboard_5fconstants_2eh_51',['SparkFun_smol_Power_Board_Constants.h',['../_spark_fun__smol___power___board___constants_8h.html',1,'']]],
+  ['sparkfun_5fsmol_5fpower_5fboard_5fio_2eh_52',['SparkFun_smol_Power_Board_IO.h',['../_spark_fun__smol___power___board___i_o_8h.html',1,'']]]
 ];

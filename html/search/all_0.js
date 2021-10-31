@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['begin_0',['begin',['../classsmol_power_a_a_a.html#a0048d05ef7082eb143b9984197c94161',1,'smolPowerAAA::begin()'],['../class_s_m_o_l___p_o_w_e_r___a_a_a___i_o.html#ab2309c1845e290dd273691fe5fffd9ae',1,'SMOL_POWER_AAA_IO::begin()']]]
+  ['begin_0',['begin',['../classsmol_power_a_a_a.html#a3c1e496980607fdf2e2db1527918628b',1,'smolPowerAAA::begin()'],['../class_s_m_o_l___p_o_w_e_r___b_o_a_r_d___i_o.html#a4e8ec3222b4bbb0b7e82d09f278cd965',1,'SMOL_POWER_BOARD_IO::begin()']]]
 ];
