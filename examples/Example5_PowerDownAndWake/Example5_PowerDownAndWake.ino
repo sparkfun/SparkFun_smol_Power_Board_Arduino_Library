@@ -11,9 +11,9 @@
  * Be aware that any I2C pull-ups will back-feed the smôl 3.3V rail.
  * 
  * Want to support open source hardware? Buy a board from SparkFun!
- * SparkX smôl Power Board AAA (SPX-18360): https://www.sparkfun.com/products/18360
- * SparkX smôl Power Board LiPo (SPX-18359): https://www.sparkfun.com/products/18359
- * SparkX smôl ESP32 (SPX-18362): https://www.sparkfun.com/products/18362
+ * SparkX smôl Power Board LiPo (SPX-18622): https://www.sparkfun.com/products/18622
+ * SparkX smôl Power Board AAA (SPX-18621): https://www.sparkfun.com/products/18621
+ * SparkX smôl ESP32 (SPX-18619): https://www.sparkfun.com/products/18619
  * 
  * @section author Author
  * 
