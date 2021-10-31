@@ -23,7 +23,7 @@ This library can be installed through the Arduino Library Manager: please search
 
 ## Documentation
 
-- **/html** - HTML documentation generated with [Doxygen](https://www.doxygen.nl/index.html). Open **/html/index.html** to view the documentation.
+- **/docs** - HTML documentation generated with [Doxygen](https://www.doxygen.nl/index.html). Open [**GitHub Pages**](https://sparkfun.github.io/SparkFun_smol_Power_Board_Arduino_Library/) to view the documentation.
 - **[Installing an Arduino Library Guide](https://learn.sparkfun.com/tutorials/installing-an-arduino-library)** - Basic information on how to install an Arduino library.
 
 ## License Information
