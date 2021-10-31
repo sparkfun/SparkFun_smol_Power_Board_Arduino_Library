@@ -8,9 +8,9 @@
  * This library facilitates communication with the smôl Power Board over I<sup>2</sup>C.
  * 
  * Want to support open source hardware? Buy a board from SparkFun!
- * SparkX smôl Power Board LiPo (SPX-18622): https://www.sparkfun.com/products/18622
- * SparkX smôl Power Board AAA (SPX-18621): https://www.sparkfun.com/products/18621
- * SparkX smôl ESP32 (SPX-18619): https://www.sparkfun.com/products/18619
+ * <br>SparkX smôl Power Board LiPo (SPX-18622): https://www.sparkfun.com/products/18622
+ * <br>SparkX smôl Power Board AAA (SPX-18621): https://www.sparkfun.com/products/18621
+ * <br>SparkX smôl ESP32 (SPX-18619): https://www.sparkfun.com/products/18619
  * 
  * @section author Author
  * 
